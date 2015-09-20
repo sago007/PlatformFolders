@@ -36,7 +36,7 @@
           <buildCommandWorkingDir>.</buildCommandWorkingDir>
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
-          <executablePath>platform_folders</executablePath>
+          <executablePath>platform_folders.out</executablePath>
         </makeTool>
       </makefileType>
       <folder path="0/sago">

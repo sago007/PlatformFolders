@@ -18,13 +18,13 @@ PROGRAMNAME=platform_folders
 
 O_FILES=${PROGRAMNAME}.o sago/platform_folders.o
 
-total: ${PROGRAMNAME}
+total: ${PROGRAMNAME}.out
 
 clean: 
 	rm -f */*.o *.o *.P */*.P ${PROGRAMNAME}
 
-${PROGRAMNAME}: $(O_FILES)
-	$(CXX) -O -o ${PROGRAMNAME} $(O_FILES) $(BASE_LIBS)
+${PROGRAMNAME}.out: $(O_FILES)
+	$(CXX) -O -o ${PROGRAMNAME}.out $(O_FILES) $(BASE_LIBS)
 
 %.o : %.cpp
 	$(CXX) -MD ${BASE_CFLAGS} -o $@ $<
