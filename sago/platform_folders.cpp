@@ -40,7 +40,7 @@
 static std::string GetWindowsFolder(int folderId, const char* errorMsg) {
 	char szPath[MAX_PATH];
 	szPath[0] = 0;
-	if ( !SUCCEEDED( SHGetFolderPath( NULL, folderId, NULL, 0, szPath ) ) )
+	if ( !SUCCEEDED( SHGetFolderPathA( NULL, folderId, NULL, 0, szPath ) ) )
 	{
 		throw std::runtime_error(errorMsg);
 	}

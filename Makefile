@@ -21,7 +21,7 @@ O_FILES=${PROGRAMNAME}.o sago/platform_folders.o
 total: ${PROGRAMNAME}.out
 
 clean: 
-	rm -f */*.o *.o *.P */*.P ${PROGRAMNAME}
+	rm -f */*.o *.o *.P */*.P ${PROGRAMNAME}.out
 
 ${PROGRAMNAME}.out: $(O_FILES)
 	$(CXX) -O -o ${PROGRAMNAME}.out $(O_FILES) $(BASE_LIBS)

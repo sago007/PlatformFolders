@@ -63,5 +63,24 @@ Download: /home/poul/Hentede filer
 Save Games 1: /home/poul/.local/share
 ```
 
+On Windows it could be:
+```
+Config: C:\users\poul\Application Data
+Data: C:\users\poul\Application Data
+Cache: C:\users\poul\Local Settings\Application Data
+Documents: C:\users\poul\Mine dokumenter
+Desktop: C:\users\poul\Skrivebord
+Pictures: C:\users\poul\Mine Billeder
+Music: C:\users\poul\Min Musik
+Video: C:\users\poul\Mine Film
+Download: C:\users\poul\Skrivebord
+Save Games 1: C:\users\poul\Mine dokumenter\My Games
+```
+
+# Encoding
+For Windows ANSI encoding is always used. Microsoft's implementation of "Unicode" is simply not compatible with platform independent code.
+For all other systems the local encoding is used. For most systems this is UTF-8.
+Generally you should only append simple ASCII chars to the paths. 
+
 # Licence 
 Provided under the MIT license for the same reason XDG is licenced under it. So that you can quickly copy-paste the methods you need or just include the "sago"-folder.
