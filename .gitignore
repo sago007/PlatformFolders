@@ -26,3 +26,10 @@
 *.exe
 *.out
 *.app
+
+# Sago's files
+private
+.deps
+doxygen
+*~
+platform_folders

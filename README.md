@@ -1,5 +1,5 @@
 # PlatformFolders
-A abstraction self contained C++ library so that you do not need to have Windows and Linux specific code to look for special directories
+A self contained C++ abstraction library so that you do not need to have Windows and Linux specific code to look for special directories
 
 # Rationale
 There are a lot of platform abstraction libraries available. You can get graphics abstraction libraries, GUI abstraction libraries and file abstraction libraries.
@@ -18,6 +18,9 @@ In Linux a lot of these folders are not official defined. However this library u
 # Mac OS X support
 Currently not supported. The Mac OS X C++ documentation is very slim and I could not get FSFindFolder to work (I need to link against something). As a result you will simply get the XDG defined folders if you try to use compile it on Mac.
 If someone could tell me what I need to link to get "_FSFindFolder" I'll add support for Mac as well.
+
+# Usage
+Copy "sago/platform_files.cpp" and "sago/platform_fildes.h" to your program and make sure that the cpp file is compiled and linked.
 
 # Hello World
 

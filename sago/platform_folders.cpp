@@ -277,7 +277,7 @@ std::string PlatformFolders::getSaveGamesFolder1() const {
 #if defined(_WIN32)
 	//A dedicated Save Games folder was not introduced until Vista. For XP and older save games are most often saved in a normal folder named "My Games".
 	//Data that should not be user accessible should be placed under GetDataHome() instead
-	return GetWindowsFolder(CSIDL_PERSONAL, "Failed to find My Documents folder")+"/My Games";
+	return GetWindowsFolder(CSIDL_PERSONAL, "Failed to find My Documents folder")+"\\My Games";
 #else
 	return getDataHome();
 #endif
