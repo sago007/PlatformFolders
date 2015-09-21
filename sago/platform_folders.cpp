@@ -61,6 +61,9 @@ static std::string GetAppDataLocal() {
 #else
 #include <map>
 #include <fstream>
+#include <pwd.h>
+#include <unistd.h>
+#include <sys/types.h>
 //Typically Linux. For easy reading the comments will just say Linux but should work with most *nixes
 
 static void throwOnRelative(const char* envName, const char* envValue) {
@@ -71,11 +74,28 @@ static void throwOnRelative(const char* envName, const char* envValue) {
 	}
 }
 
+/**
+ * Retrives the effective user's home dir. 
+ * If the user is running as root we ignore the HOME environment. It works badly with sudo. 
+ * Writing to $HOME as root implies security concerns that a multiplatform program cannot be assumed to handle.
+ * @return The home directory. HOME environment is respected for non-root users if it exists. 
+ */
 static std::string getHome() {
 	std::string res;
-	const char* tempRes = getenv("HOME");
+	int uid = getuid();
+	const char* homeEnv = getenv("HOME");
+	if ( uid != 0 && homeEnv) {
+		//We only acknowlegde HOME if not root.
+		res = homeEnv;
+		return res;
+	}
+	struct passwd *pw = getpwuid(uid);
+	if (!pw) {
+		throw std::runtime_error("Unable to get passwd struct.");
+	}
+	const char* tempRes = pw->pw_dir;
 	if (!tempRes) {
-		throw std::runtime_error("The environment HOME is not defined");
+		throw std::runtime_error("User has no home directory");
 	}
 	res = tempRes;
 	return res;
