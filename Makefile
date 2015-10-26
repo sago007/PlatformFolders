@@ -14,6 +14,14 @@ else
 BASE_CFLAGS+= -std=c++03
 endif
 
+#This is used to detect Mac because Mac needs CoreServices for linking
+ifneq ($(OS),Windows_NT)
+UNAME := $(shell uname -s)
+ifeq ($(UNAME),Darwin)
+BASE_LIBS+= -framework CoreServices
+endif
+endif
+
 PROGRAMNAME=platform_folders
 
 O_FILES=${PROGRAMNAME}.o sago/platform_folders.o
