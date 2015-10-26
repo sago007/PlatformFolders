@@ -1,5 +1,5 @@
 # PlatformFolders
-A self contained C++ abstraction library so that you do not need to have Windows and Linux specific code to look for special directories
+A self contained C++ abstraction library so that you do not need to have Linux, Windows and Mac OS X specific code to look for special directories
 
 # Rationale
 There are a lot of platform abstraction libraries available. You can get graphics abstraction libraries, GUI abstraction libraries and file abstraction libraries.
@@ -12,12 +12,12 @@ For Windows the folders are fetched using SHGetFolderPath.
 The amount of supported folders differ from Windows version and this library targets XP and newer... and I'll drop XP support very soon. 
 Currently "Save Games" and "Downloads" should not be used as they are undefined on XP. 
 
+
 # Linux support
 In Linux a lot of these folders are not official defined. However this library uses XDG user dirs.
 
 # Mac OS X support
-Currently not supported. The Mac OS X C++ documentation is very slim and I could not get FSFindFolder to work (I need to link against something). As a result you will simply get the XDG defined folders if you try to use compile it on Mac.
-If someone could tell me what I need to link to get "_FSFindFolder" I'll add support for Mac as well.
+Uses the deprecated FSFindFolder (there is no C++ alternative). It requires "-framework CoreServices" during linking.
 
 # Usage
 Copy "sago/platform_files.cpp" and "sago/platform_fildes.h" to your program and make sure that the cpp file is compiled and linked.
@@ -75,6 +75,20 @@ Music: C:\users\poul\Min Musik
 Video: C:\users\poul\Mine Film
 Download: C:\users\poul\Skrivebord
 Save Games 1: C:\users\poul\Mine dokumenter\My Games
+```
+
+On Mac OS X it could be:
+```
+Config: /Users/poul/Library/Application Support
+Data: /Users/poul/Library/Application Support
+Cache: /Users/poul/Library/Caches
+Documents: /Users/poul/Documents
+Desktop: /Users/poul/Desktop
+Pictures: /Users/poul/Pictures
+Music: /Users/poul/Music
+Video: /Users/poul/Movies
+Download: /Users/poul/Downloads
+Save Games 1: /Users/poul/Library/Application Support
 ```
 
 # Encoding
