@@ -7,6 +7,8 @@ There are a lot of platform abstraction libraries available. You can get graphic
 But folder abstraction seems to be more difficult.
 My problem was that the code that found the place to save data was platform dependent. This cluttered my code and often I would not discover that it did not compile until moving it to the different platforms.
 
+I have written a bit more about it here: http://sago007.blogspot.dk/2015/10/abstraction-for-special-folders.html
+
 # Windows support
 For Windows the folders are fetched using SHGetFolderPath.
 The amount of supported folders differ from Windows version and this library targets XP and newer... and I'll drop XP support very soon. 
