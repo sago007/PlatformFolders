@@ -1,8 +1,10 @@
+ifdef CROSS
 CC=$(CROSS)gcc
 CXX=$(CROSS)g++
 LD=$(CROSS)ld
 AR=$(CROSS)ar
 PKG_CONFIG=$(CROSS)pkg-config
+endif
 
 BASE_LIBS=
 BASE_CFLAGS=-c -g -O2 -Wall
