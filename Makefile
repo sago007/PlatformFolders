@@ -7,7 +7,7 @@ PKG_CONFIG=$(CROSS)pkg-config
 endif
 
 BASE_LIBS=
-BASE_CFLAGS=-c -g -O2 -Wall
+BASE_CFLAGS=-c -g -O2 -Wall -pedantic-errors
 
 #The files should compile on both C++03 and C++11
 ifdef TESTCPP11
