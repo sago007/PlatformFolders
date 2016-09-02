@@ -163,7 +163,7 @@ private:
 	PlatformFolders(const PlatformFolders&);
 	PlatformFolders& operator=(const PlatformFolders&);
 	struct PlatformFoldersData;
-	mutable PlatformFoldersData *data;
+	PlatformFoldersData *data;
 };
 
 }  //namespace sago
