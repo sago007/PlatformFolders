@@ -39,22 +39,21 @@ This sample program gets all folders from the system:
 #include <iostream>
 #include "sago/platform_folders.h"
 
-using namespace std;
-using namespace sago;
+using std::cout;
 
 int main()
 {
-	cout << "Config: " << getConfigHome() << endl;
-	cout << "Data: " << getDataHome() << endl;
-	cout << "Cache: " << getCacheDir() << endl;
-	PlatformFolders p;
-	cout << "Documents: " << p.getDocumentsFolder() << endl;
-	cout << "Desktop: " << p.getDesktopFolder() << endl;
-	cout << "Pictures: " << p.getPicturesFolder() << endl;
-	cout << "Music: " << p.getMusicFolder() << endl;
-	cout << "Video: " << p.getVideoFolder() << endl;
-	cout << "Download: " << p.getDownloadFolder1() << endl;
-	cout << "Save Games 1: " << p.getSaveGamesFolder1() << endl;
+	cout << "Config: " << sago::getConfigHome() << "\n";
+	cout << "Data: " << sago::getDataHome() << "\n";
+	cout << "Cache: " << sago::getCacheDir() << "\n";
+	sago::PlatformFolders p;
+	cout << "Documents: " << p.getDocumentsFolder() << "\n";
+	cout << "Desktop: " << p.getDesktopFolder() << "\n";
+	cout << "Pictures: " << p.getPicturesFolder() << "\n";
+	cout << "Music: " << p.getMusicFolder() << "\n";
+	cout << "Video: " << p.getVideoFolder() << "\n";
+	cout << "Download: " << p.getDownloadFolder1() << "\n";
+	cout << "Save Games 1: " << p.getSaveGamesFolder1() << "\n";
 	return 0;
 }
 ```
