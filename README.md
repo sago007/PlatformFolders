@@ -3,6 +3,8 @@ A self contained C++ abstraction library so that you do not need to have Linux, 
 
 Can be found at: https://github.com/sago007/PlatformFolders
 
+Releases can be downloaded here: https://github.com/sago007/PlatformFolders/releases
+
 # Rationale
 There are a lot of platform abstraction libraries available. You can get graphics abstraction libraries, GUI abstraction libraries and file abstraction libraries.
 
