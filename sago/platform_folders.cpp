@@ -3,7 +3,7 @@
 
   The original files are hosted here: https://github.com/sago007/PlatformFolders
 
-  Copyright (c) 2015 Poul Sander
+  Copyright (c) 2015-2016 Poul Sander
 
   Permission is hereby granted, free of charge, to any person
   obtaining a copy of this software and associated documentation files
@@ -142,7 +142,7 @@ static void appendExtraFoldersTokenizer(const char* envName, const char* envValu
 		else {
 			//Unless the system is wrongly configured this should never happen... But of course some systems will be incorectly configured.
 			//The XDG documentation indicates that the folder should be ignored but that the program should continue.
-			std::cerr << "Skipping path \"" << p << "\" in \"" << envName << "\" because it does not start with a \"/\"" << std::endl;
+			std::cerr << "Skipping path \"" << p << "\" in \"" << envName << "\" because it does not start with a \"/\"\n";
 		}
 		p = strtok_r (NULL, ":", &saveptr);
 	}
@@ -227,7 +227,7 @@ static void PlatformFoldersAddFromFile(const std::string& filename, std::map<std
 		std::string key = line.substr(0, splitPos);
 		std::string value = line.substr(splitPos+2, line.length()-splitPos-3);
 		folders[key] = value;
-		//std::cout << key << " : " << value << std::endl;
+		//std::cout << key << " : " << value << "\n";
 	}
 }
 
