@@ -1,8 +1,13 @@
 language: cpp
+
+os:
+  - linux
+  - osx
+
 compiler:
   - gcc
   - clang
-script: make
+script: make && ./platform_folders.out
 
 notifications:
   email: false
