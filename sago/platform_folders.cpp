@@ -39,14 +39,33 @@
 
 #define strtok_r strtok_s
 
+static std::string win32_utf16_to_utf8(const wchar_t* wstr)
+{
+	std::string res;
+	// If the 6th parameter is 0 then WideCharToMultiByte returns the number of bytes needed to store the result.
+	int actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, 0, NULL, NULL);
+	if (actualSize > 0) {
+		//If the converted UTF-8 string could not be in the initial buffer. Allocate one that can hold it.
+		std::vector<char> buffer(actualSize);
+		actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &buffer[0], buffer.size(), NULL, NULL);
+		res = buffer.data();
+	}
+	if (actualSize == 0) {
+		// WideCharToMultiByte return 0 for errors.
+		std::string errorMsg = "UTF16 to UTF8 failed with error code: " + GetLastError();
+		throw std::runtime_error(errorMsg.c_str());
+	}
+	return res;
+}
+
 static std::string GetWindowsFolder(int folderId, const char* errorMsg) {
-	char szPath[MAX_PATH];
+	wchar_t szPath[MAX_PATH];
 	szPath[0] = 0;
-	if ( !SUCCEEDED( SHGetFolderPathA( NULL, folderId, NULL, 0, szPath ) ) )
+	if ( !SUCCEEDED( SHGetFolderPathW( NULL, folderId, NULL, 0, szPath ) ) )
 	{
 		throw std::runtime_error(errorMsg);
 	}
-	return szPath;
+	return win32_utf16_to_utf8(szPath);
 }
 
 static std::string GetAppData() {
