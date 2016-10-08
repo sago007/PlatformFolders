@@ -103,9 +103,9 @@ Save Games 1: /Users/poul/Library/Application Support
 ```
 
 # Encoding
-For Windows ANSI encoding is always used. Microsoft's implementation of "Unicode" is simply not compatible with platform independent code.
-For all other systems the local encoding is used. For most systems this is UTF-8.
-Generally you should only append simple ASCII chars to the paths. 
+From version 3.0 UTF-8 is always used on Windows and will also be the default in almost any other system.
+Before version 3.0 Windows used ANSI encoding. Microsoft's default choice of UTF-16 is not compatible with platform independent code.
+Although the user may use an charectors they want I recommend, that the progran should not have non ASCII charectors in the soruce code itself. 
 
 # Licence 
 Provided under the MIT license for the same reason XDG is licenced under it. So that you can quickly copy-paste the methods you need or just include the "sago"-folder.
