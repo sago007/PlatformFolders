@@ -1,4 +1,4 @@
-# PlatformFolders [![Build Status](https://travis-ci.org/sago007/PlatformFolders.svg?branch=master)](https://travis-ci.org/sago007/PlatformFolders)
+# PlatformFolders [![Build Status](https://travis-ci.org/sago007/PlatformFolders.svg?branch=master)](https://travis-ci.org/sago007/PlatformFolders) [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 A self contained C++ abstraction library so that you do not need to have Linux, Windows and Mac OS X specific code to look for special directories
 
 Can be found at: https://github.com/sago007/PlatformFolders
