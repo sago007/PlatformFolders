@@ -1,5 +1,5 @@
 # PlatformFolders [![Build Status](https://travis-ci.org/sago007/PlatformFolders.svg?branch=master)](https://travis-ci.org/sago007/PlatformFolders) [![license](https://img.shields.io/github/license/sago007/PlatformFolders.svg)](https://raw.githubusercontent.com/sago007/PlatformFolders/master/LICENSE)
-A self contained C++ abstraction library so that you do not need to have Linux, Windows and Mac OS X specific code to look for special directories
+A C++ library to look for special directories like "My Documents" and "%APPDATA%" so that you do not need to write Linux, Windows or Mac OS X specific code
 
 Can be found at: https://github.com/sago007/PlatformFolders
 
@@ -14,15 +14,15 @@ My problem was that the code that found the place to save data was platform depe
 I have written a bit more about it here: http://sago007.blogspot.dk/2015/10/abstraction-for-special-folders.html
 
 There are some alternatives that you might consider instead:
-  * QStandardPaths - http://doc.qt.io/qt-5/qstandardpaths.html 
+  * QStandardPaths - http://doc.qt.io/qt-5/qstandardpaths.html
   * glib - https://developer.gnome.org/glib/stable/glib-Miscellaneous-Utility-Functions.html
 
-Both are properly more mature than this library. However they are both parts of large frameworks and using them with libraries outside the framework may not be that simple. 
+Both are properly more mature than this library. However they are both parts of large frameworks and using them with libraries outside the framework may not be that simple.
 
 # Windows support
 For Windows the folders are fetched using SHGetFolderPath.
-The amount of supported folders differ from Windows version and this library targets XP and newer... and I'll drop XP support very soon. 
-Currently "Save Games" and "Downloads" should not be used as they are undefined on XP. 
+The amount of supported folders differ from Windows version and this library targets XP and newer... and I'll drop XP support very soon.
+Currently "Save Games" and "Downloads" should not be used as they are undefined on XP.
 
 
 # Linux support
@@ -105,7 +105,7 @@ Save Games 1: /Users/poul/Library/Application Support
 # Encoding
 From version 3.0 UTF-8 is always used on Windows and will also be the default in almost any other system.
 Before version 3.0 Windows used ANSI encoding. Microsoft's default choice of UTF-16 is not compatible with platform independent code.
-Although the user may use an charectors they want I recommend, that the progran should not have non ASCII charectors in the soruce code itself. 
+Although the user may use an charectors they want I recommend, that the progran should not have non ASCII charectors in the soruce code itself.
 
-# Licence 
+# Licence
 Provided under the MIT license for the same reason XDG is licenced under it. So that you can quickly copy-paste the methods you need or just include the "sago"-folder.
