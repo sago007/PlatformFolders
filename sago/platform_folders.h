@@ -2,7 +2,7 @@
   Its is under the MIT license, to encourage reuse by cut-and-paste.
 
   The original files are hosted here: https://github.com/sago007/PlatformFolders
-  
+
   Copyright (c) 2015 Poul Sander
 
   Permission is hereby granted, free of charge, to any person
@@ -162,11 +162,14 @@ public:
 private:
 	PlatformFolders(const PlatformFolders&);
 	PlatformFolders& operator=(const PlatformFolders&);
+#if defined(_WIN32)
+#elif defined(__APPLE__)
+#else
 	struct PlatformFoldersData;
 	PlatformFoldersData *data;
+#endif
 };
 
 }  //namespace sago
 
 #endif	/* PLATFORM_FOLDERS_H */
-
