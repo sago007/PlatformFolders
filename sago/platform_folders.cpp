@@ -101,6 +101,8 @@ static std::string GetMacFolder(OSType folderType, const char* errorMsg) {
 #include <pwd.h>
 #include <unistd.h>
 #include <sys/types.h>
+// For strlen
+#include <cstring>
 //Typically Linux. For easy reading the comments will just say Linux but should work with most *nixes
 
 static void throwOnRelative(const char* envName, const char* envValue) {
@@ -120,7 +122,7 @@ static void throwOnRelative(const char* envName, const char* envValue) {
 static std::string getHome() {
 	std::string res;
 	int uid = getuid();
-	const char* homeEnv = getenv("HOME");
+	const char* homeEnv = std::getenv("HOME");
 	if ( uid != 0 && homeEnv) {
 		//We only acknowlegde HOME if not root.
 		res = homeEnv;
@@ -140,7 +142,7 @@ static std::string getHome() {
 
 static std::string getLinuxFolderDefault(const char* envName, const char* defaultRelativePath) {
 	std::string res;
-	const char* tempRes = getenv(envName);
+	const char* tempRes = std::getenv(envName);
 	if (tempRes) {
 		throwOnRelative(envName, tempRes);
 		res = tempRes;
@@ -151,7 +153,7 @@ static std::string getLinuxFolderDefault(const char* envName, const char* defaul
 }
 
 static void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders) {
-	std::vector<char> buffer(envValue, envValue + strlen(envValue) + 1);
+	std::vector<char> buffer(envValue, envValue + std::strlen(envValue) + 1);
 	char *saveptr;
 	const char* p = strtok_r ( &buffer[0], ":", &saveptr);
 	while (p != NULL) {
@@ -168,7 +170,7 @@ static void appendExtraFoldersTokenizer(const char* envName, const char* envValu
 }
 
 static void appendExtraFolders(const char* envName, const char* defaultValue, std::vector<std::string>& folders) {
-	const char* envValue = getenv(envName);
+	const char* envValue = std::getenv(envName);
 	if (!envValue) {
 		envValue = defaultValue;
 	}
