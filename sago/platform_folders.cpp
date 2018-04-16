@@ -30,7 +30,7 @@ SOFTWARE.
 #include <iostream>
 #include <stdexcept>
 #include <string.h>
-#include <stdio.h>
+#include <cstdio>
 #include <cstdlib>
 #include <string>
 #include <vector>
@@ -108,7 +108,7 @@ static std::string GetMacFolder(OSType folderType, const char* errorMsg) {
 static void throwOnRelative(const char* envName, const char* envValue) {
 	if (envValue[0] != '/') {
 		char buffer[200];
-		snprintf(buffer, sizeof(buffer), "Environment \"%s\" does not start with an '/'. XDG specifies that the value must be absolute. The current value is: \"%s\"", envName, envValue);
+		std::snprintf(buffer, sizeof(buffer), "Environment \"%s\" does not start with an '/'. XDG specifies that the value must be absolute. The current value is: \"%s\"", envName, envValue);
 		throw std::runtime_error(buffer);
 	}
 }
