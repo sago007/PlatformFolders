@@ -34,3 +34,6 @@ doxygen
 *~
 platform_folders
 nbproject
+
+# Commonly used build dir
+build
