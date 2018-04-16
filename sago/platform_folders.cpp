@@ -32,6 +32,8 @@ SOFTWARE.
 #include <string.h>
 #include <stdio.h>
 #include <cstdlib>
+#include <string>
+#include <vector>
 
 #if defined(_WIN32)
 #include <windows.h>

@@ -25,6 +25,8 @@
 */
 
 #include <iostream>
+#include <string>
+#include <vector>
 #include "sago/platform_folders.h"
 
 int main()
