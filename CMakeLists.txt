@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
+# For target_compile_features
+cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
 project(platform_folders VERSION 3.0.0 LANGUAGES CXX)
 
 # Since it's off, the library will be static by default
@@ -19,6 +20,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	PUBLIC_HEADER "sago/platform_folders.h"
 )
+
+# Minimum C++11 for "nullptr"
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_11)
 
 # Apple requires linking to CoreServices
 # Check sys name instead of "APPLE" for cross-compilation
