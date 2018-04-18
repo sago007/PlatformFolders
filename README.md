@@ -19,6 +19,12 @@ There are some alternatives that you might consider instead:
 
 Both are properly more mature than this library. However they are both parts of large frameworks and using them with libraries outside the framework may not be that simple.
 
+# Documentation
+
+Aside from this page there are also Doxygen available:
+
+  * 3.0: http://sago007.github.io/PlatformFolders/html/doxygen/3.0/
+
 # Windows support
 For Windows the folders are fetched using SHGetFolderPath.
 The amount of supported folders differ from Windows version and this library targets XP and newer... and I'll drop XP support very soon.
@@ -105,7 +111,7 @@ Save Games 1: /Users/poul/Library/Application Support
 # Encoding
 From version 3.0 UTF-8 is always used on Windows and will also be the default in almost any other system.
 Before version 3.0 Windows used ANSI encoding. Microsoft's default choice of UTF-16 is not compatible with platform independent code.
-Although the user may use an charectors they want I recommend, that the progran should not have non ASCII charectors in the soruce code itself.
+Although the user may use an characters they want I recommend, that the program should not have non ASCII characters in the source code itself.
 
 # Licence
-Provided under the MIT license for the same reason XDG is licenced under it. So that you can quickly copy-paste the methods you need or just include the "sago"-folder.
+Provided under the MIT license for the same reason XDG is licensed under it. So that you can quickly copy-paste the methods you need or just include the "sago"-folder.
