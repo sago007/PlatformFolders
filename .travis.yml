@@ -1,13 +1,34 @@
 language: cpp
-
-os:
-  - linux
-  - osx
-
-compiler:
-  - gcc
-  - clang
-script: make && ./platform_folders.out
-
+matrix:
+  include:
+    - os: linux
+      env: BUILD_TYPE=Debug
+      compiler: gcc
+    - os: linux
+      env: BUILD_TYPE=Debug
+      compiler: clang
+    - os: linux
+      env: BUILD_TYPE=Release
+      compiler: gcc
+    - os: linux
+      env: BUILD_TYPE=Release
+      compiler: clang
+    - os: osx
+      env: BUILD_TYPE=Debug
+      compiler: gcc
+    - os: osx
+      env: BUILD_TYPE=Debug
+      compiler: clang
+    - os: osx
+      env: BUILD_TYPE=Release
+      compiler: gcc
+    - os: osx
+      env: BUILD_TYPE=Release
+      compiler: clang
+before_script:
+  - mkdir -p build && cd build
+script:
+  # Run cmake, then compile and run tests with make
+  - cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE .. && make -j$(nproc) && make test
 notifications:
   email: false
