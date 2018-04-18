@@ -19,6 +19,12 @@ There are some alternatives that you might consider instead:
 
 Both are properly more mature than this library. However they are both parts of large frameworks and using them with libraries outside the framework may not be that simple.
 
+# Documentation
+
+Aside from this page there are also Doxygen available:
+
+  * 3.0: http://sago007.github.io/PlatformFolders/html/doxygen/3.0/
+
 # Windows support
 For Windows the folders are fetched using SHGetFolderPath.
 The amount of supported folders differ from Windows version and this library targets XP and newer... and I'll drop XP support very soon.
