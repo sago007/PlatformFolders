@@ -1,5 +1,5 @@
-# PlatformFolders [![Build Status](https://travis-ci.org/sago007/PlatformFolders.svg?branch=master)](https://travis-ci.org/sago007/PlatformFolders) [![license](https://img.shields.io/github/license/sago007/PlatformFolders.svg)](https://raw.githubusercontent.com/sago007/PlatformFolders/master/LICENSE) [![Join the chat at https://gitter.im/PlatformFolders/Lobby](https://badges.gitter.im/PlatformFolders/Lobby.svg)](https://gitter.im/PlatformFolders/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/729e36adcf5c4523bd136de1b33441cb)](https://www.codacy.com/app/github_43/PlatformFolders?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sago007/PlatformFolders&amp;utm_campaign=Badge_Grade)
-A C++ library to look for special directories like "My Documents" and "%APPDATA%" so that you do not need to write Linux, Windows or Mac OS X specific code
+# PlatformFolders [![Build Status](https://travis-ci.org/sago007/PlatformFolders.svg?branch=master)](https://travis-ci.org/sago007/PlatformFolders) [![license](https://img.shields.io/github/license/sago007/PlatformFolders.svg)](https://raw.githubusercontent.com/sago007/PlatformFolders/master/LICENSE)
+A C++ library to look for special directories like "My Documents" and "%APPDATA%" so that you do not need to write Linux, Windows and Mac OS X specific code
 
 Can be found at: https://github.com/sago007/PlatformFolders
 
@@ -40,11 +40,22 @@ Uses the deprecated FSFindFolder (there is no C++ alternative). It requires "-fr
 # Usage
 Copy "sago/platform_files.cpp" and "sago/platform_fildes.h" to your program and make sure that the cpp file is compiled and linked.
 
+It is also possible to compile and it like:
+```
+mkdir -p build
+cd build
+cmake ..
+make
+```
+Just be aware that Mac OS X requires "-framework CoreServices" during linking no matter the choice.
+
 # Hello World
 
 This sample program gets all folders from the system:
 ```
 #include <iostream>
+#include <stirng>
+#include <vector>
 #include "sago/platform_folders.h"
 
 using std::cout;
@@ -108,8 +119,14 @@ Download: /Users/poul/Downloads
 Save Games 1: /Users/poul/Library/Application Support
 ```
 
+# C++ support
+Versions up to 3.X.X should compile with any C++98 compiler.
+Versions from 4.0.0 and up requires a C++11 compatible compiler.
+
+The aim is to always support the default C++ compiler on the oldest supported version of Ubuntu. This is a very basic library and it is not supposed to force you to upgrade.
+
 # Encoding
-From version 3.0 UTF-8 is always used on Windows and will also be the default in almost any other system.
+From version 3.0 UTF-8 is always used on Windows and will also be the default on almost any other system.
 Before version 3.0 Windows used ANSI encoding. Microsoft's default choice of UTF-16 is not compatible with platform independent code.
 Although the user may use an characters they want I recommend, that the program should not have non ASCII characters in the source code itself.
 
