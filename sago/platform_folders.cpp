@@ -29,9 +29,12 @@ SOFTWARE.
 #include "platform_folders.h"
 #include <iostream>
 #include <stdexcept>
-#include <string.h>
-#include <stdio.h>
+#include <cstdio>
 #include <cstdlib>
+// For nullptr
+#include <cstddef>
+#include <string>
+#include <vector>
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -43,11 +46,11 @@ static std::string win32_utf16_to_utf8(const wchar_t* wstr)
 {
 	std::string res;
 	// If the 6th parameter is 0 then WideCharToMultiByte returns the number of bytes needed to store the result.
-	int actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, 0, NULL, NULL);
+	int actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, nullptr, 0, nullptr, nullptr);
 	if (actualSize > 0) {
 		//If the converted UTF-8 string could not be in the initial buffer. Allocate one that can hold it.
 		std::vector<char> buffer(actualSize);
-		actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &buffer[0], buffer.size(), NULL, NULL);
+		actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &buffer[0], buffer.size(), nullptr, nullptr);
 		res = buffer.data();
 	}
 	if (actualSize == 0) {
@@ -61,7 +64,7 @@ static std::string win32_utf16_to_utf8(const wchar_t* wstr)
 static std::string GetWindowsFolder(int folderId, const char* errorMsg) {
 	wchar_t szPath[MAX_PATH];
 	szPath[0] = 0;
-	if ( !SUCCEEDED( SHGetFolderPathW( NULL, folderId, NULL, 0, szPath ) ) )
+	if ( !SUCCEEDED( SHGetFolderPathW( nullptr, folderId, nullptr, 0, szPath ) ) )
 	{
 		throw std::runtime_error(errorMsg);
 	}
@@ -101,12 +104,14 @@ static std::string GetMacFolder(OSType folderType, const char* errorMsg) {
 #include <pwd.h>
 #include <unistd.h>
 #include <sys/types.h>
+// For strlen
+#include <cstring>
 //Typically Linux. For easy reading the comments will just say Linux but should work with most *nixes
 
 static void throwOnRelative(const char* envName, const char* envValue) {
 	if (envValue[0] != '/') {
 		char buffer[200];
-		snprintf(buffer, sizeof(buffer), "Environment \"%s\" does not start with an '/'. XDG specifies that the value must be absolute. The current value is: \"%s\"", envName, envValue);
+		std::snprintf(buffer, sizeof(buffer), "Environment \"%s\" does not start with an '/'. XDG specifies that the value must be absolute. The current value is: \"%s\"", envName, envValue);
 		throw std::runtime_error(buffer);
 	}
 }
@@ -120,7 +125,7 @@ static void throwOnRelative(const char* envName, const char* envValue) {
 static std::string getHome() {
 	std::string res;
 	int uid = getuid();
-	const char* homeEnv = getenv("HOME");
+	const char* homeEnv = std::getenv("HOME");
 	if ( uid != 0 && homeEnv) {
 		//We only acknowlegde HOME if not root.
 		res = homeEnv;
@@ -140,7 +145,7 @@ static std::string getHome() {
 
 static std::string getLinuxFolderDefault(const char* envName, const char* defaultRelativePath) {
 	std::string res;
-	const char* tempRes = getenv(envName);
+	const char* tempRes = std::getenv(envName);
 	if (tempRes) {
 		throwOnRelative(envName, tempRes);
 		res = tempRes;
@@ -151,10 +156,10 @@ static std::string getLinuxFolderDefault(const char* envName, const char* defaul
 }
 
 static void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders) {
-	std::vector<char> buffer(envValue, envValue + strlen(envValue) + 1);
+	std::vector<char> buffer(envValue, envValue + std::strlen(envValue) + 1);
 	char *saveptr;
 	const char* p = strtok_r ( &buffer[0], ":", &saveptr);
-	while (p != NULL) {
+	while (p != nullptr) {
 		if (p[0] == '/') {
 			folders.push_back(p);
 		}
@@ -163,12 +168,12 @@ static void appendExtraFoldersTokenizer(const char* envName, const char* envValu
 			//The XDG documentation indicates that the folder should be ignored but that the program should continue.
 			std::cerr << "Skipping path \"" << p << "\" in \"" << envName << "\" because it does not start with a \"/\"\n";
 		}
-		p = strtok_r (NULL, ":", &saveptr);
+		p = strtok_r (nullptr, ":", &saveptr);
 	}
 }
 
 static void appendExtraFolders(const char* envName, const char* defaultValue, std::vector<std::string>& folders) {
-	const char* envValue = getenv(envName);
+	const char* envValue = std::getenv(envName);
 	if (!envValue) {
 		envValue = defaultValue;
 	}
