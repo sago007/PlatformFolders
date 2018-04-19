@@ -37,8 +37,6 @@ SOFTWARE.
 #include <windows.h>
 #include <shlobj.h>
 
-#define strtok_r strtok_s
-
 static std::string win32_utf16_to_utf8(const wchar_t* wstr)
 {
 	std::string res;
@@ -52,7 +50,7 @@ static std::string win32_utf16_to_utf8(const wchar_t* wstr)
 	}
 	if (actualSize == 0) {
 		// WideCharToMultiByte return 0 for errors.
-		std::string errorMsg = "UTF16 to UTF8 failed with error code: " + GetLastError();
+		const std::string errorMsg = "UTF16 to UTF8 failed with error code: " + GetLastError();
 		throw std::runtime_error(errorMsg.c_str());
 	}
 	return res;
@@ -101,7 +99,7 @@ static std::string GetMacFolder(OSType folderType, const char* errorMsg) {
 #include <pwd.h>
 #include <unistd.h>
 #include <sys/types.h>
-// For strlen
+// For strlen and strtok
 #include <cstring>
 //Typically Linux. For easy reading the comments will just say Linux but should work with most *nixes
 
@@ -154,8 +152,7 @@ static std::string getLinuxFolderDefault(const char* envName, const char* defaul
 
 static void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders) {
 	std::vector<char> buffer(envValue, envValue + std::strlen(envValue) + 1);
-	char *saveptr;
-	const char* p = strtok_r ( &buffer[0], ":", &saveptr);
+	char* p = std::strtok ( &buffer[0], ":");
 	while (p != NULL) {
 		if (p[0] == '/') {
 			folders.push_back(p);
@@ -165,7 +162,7 @@ static void appendExtraFoldersTokenizer(const char* envName, const char* envValu
 			//The XDG documentation indicates that the folder should be ignored but that the program should continue.
 			std::cerr << "Skipping path \"" << p << "\" in \"" << envName << "\" because it does not start with a \"/\"\n";
 		}
-		p = strtok_r (NULL, ":", &saveptr);
+		p = std::strtok (NULL, ":");
 	}
 }
 
