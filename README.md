@@ -1,4 +1,5 @@
-# PlatformFolders [![Build Status](https://travis-ci.org/sago007/PlatformFolders.svg?branch=master)](https://travis-ci.org/sago007/PlatformFolders) [![license](https://img.shields.io/github/license/sago007/PlatformFolders.svg)](https://raw.githubusercontent.com/sago007/PlatformFolders/master/LICENSE)
+# PlatformFolders [![Build Status](https://travis-ci.org/sago007/PlatformFolders.svg?branch=master)](https://travis-ci.org/sago007/PlatformFolders) [![AppVeyor](https://img.shields.io/appveyor/ci/sago007/PlatformFolders.svg?label=Windows)](https://ci.appveyor.com/project/sago007/platformfolders) [![license](https://img.shields.io/github/license/sago007/PlatformFolders.svg)](https://raw.githubusercontent.com/sago007/PlatformFolders/master/LICENSE)
+
 A C++ library to look for special directories like "My Documents" and "%APPDATA%" so that you do not need to write Linux, Windows and Mac OS X specific code
 
 Can be found at: https://github.com/sago007/PlatformFolders
