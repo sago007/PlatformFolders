@@ -46,19 +46,15 @@ clone_depth: 1
 
 # Generate the .sln file with Cmake before running MSBuild
 before_build:
-  - cmd: mkdir c:\projects\platform_folders\build
-  - cmd: cd c:\projects\platform_folders\build
+  - cmd: mkdir "%APPVEYOR_BUILD_FOLDER%"\build
+  - cmd: cd "%APPVEYOR_BUILD_FOLDER%"\build
   # I know this is ugly, but the matrix didn't work, and newlines seem to not be supported
   - cmd: IF "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" (IF "%PLATFORM%"=="x86" (cmake -G "Visual Studio 14 2015" ..) ELSE (cmake -G "Visual Studio 14 2015 Win64" -T host=x64 ..)) ELSE (IF "%PLATFORM%"=="x86" (cmake -G "Visual Studio 15 2017" ..) ELSE (cmake -G "Visual Studio 15 2017 Win64" -T host=x64 ..))
 
-# Runs MSBuild.exe with logging & some options
-build:
-  # Allows for faster builds
-  parallel: true
-  # The solution file is the name of the project() given to Cmake
-  project: c:\projects\platform_folders\build\platform_folders.sln
-  # Trust me, you don't want higher than minimal. Even this is spammy
-  verbosity: minimal
+# CMake generates the platform as "Win32" instead of "x86" when building 32-bit
+# but 64-bit is "x64"
+build_script:
+  - cmd: IF "%PLATFORM%"=="x86" (MSBuild.exe "%APPVEYOR_BUILD_FOLDER%"\build\platform_folders.sln /p:Configuration="%CONFIGURATION%" /p:Platform="Win32" /v:minimal /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll") ELSE (MSBuild.exe "%APPVEYOR_BUILD_FOLDER%"\build\platform_folders.sln /p:Configuration="%CONFIGURATION%" /p:Platform="%PLATFORM%" /v:minimal /m /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll")
 
 #---------------------------------#
 #       tests configuration       #
@@ -67,7 +63,7 @@ build:
 # to run your custom scripts instead of automatic tests
 # The %CONFIGURATION% and %PLATFORM% variables are set from Appveyor as env-vars
 test_script:
-  - cmd: MSBuild.exe /p:Configuration="%CONFIGURATION%" /p:Platform="%PLATFORM%" /v:minimal c:\projects\platform_folders\build\RUN_TESTS.vcxproj
+  - cmd: MSBuild.exe /p:Configuration="%CONFIGURATION%" /p:Platform="%PLATFORM%" /v:minimal "%APPVEYOR_BUILD_FOLDER%"\build\RUN_TESTS.vcxproj
 
 #---------------------------------#
 #        global handlers          #
@@ -75,4 +71,4 @@ test_script:
 
 # on build failure dump cmake err log
 on_failure:
-  - cmd: IF exist c:\projects\platform_folders\build\CMakeFiles\CMakeError.log (type c:\projects\platform_folders\build\CMakeFiles\CMakeError.log)
+  - cmd: IF exist "%APPVEYOR_BUILD_FOLDER%"\build\CMakeFiles\CMakeError.log (type "%APPVEYOR_BUILD_FOLDER%"\build\CMakeFiles\CMakeError.log)
