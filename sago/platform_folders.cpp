@@ -32,7 +32,7 @@ SOFTWARE.
 #include <cstdio>
 #include <cstdlib>
 
-#if defined(_WIN32)
+#ifdef _WIN32
 #include <windows.h>
 #include <shlobj.h>
 
@@ -179,7 +179,7 @@ static void appendExtraFolders(const char* envName, const char* defaultValue, st
 namespace sago {
 
 std::string getDataHome() {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetAppData();
 #elif defined(__APPLE__)
 	return GetMacFolder(kApplicationSupportFolderType, "Failed to find the Application Support Folder");
@@ -189,7 +189,7 @@ std::string getDataHome() {
 }
 
 std::string getConfigHome() {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetAppData();
 #elif defined(__APPLE__)
 	return GetMacFolder(kApplicationSupportFolderType, "Failed to find the Application Support Folder");
@@ -199,7 +199,7 @@ std::string getConfigHome() {
 }
 
 std::string getCacheDir() {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetAppDataLocal();
 #elif defined(__APPLE__)
 	return GetMacFolder(kCachedDataFolderType, "Failed to find the Application Support Folder");
@@ -209,7 +209,7 @@ std::string getCacheDir() {
 }
 
 void appendAdditionalDataDirectories(std::vector<std::string>& homes) {
-#if defined(_WIN32)
+#ifdef _WIN32
 	homes.push_back(GetAppDataCommon());
 #elif !defined(__APPLE__)
 	appendExtraFolders("XDG_DATA_DIRS", "/usr/local/share/:/usr/share/", homes);
@@ -217,7 +217,7 @@ void appendAdditionalDataDirectories(std::vector<std::string>& homes) {
 }
 
 void appendAdditionalConfigDirectories(std::vector<std::string>& homes) {
-#if defined(_WIN32)
+#ifdef _WIN32
 	homes.push_back(GetAppDataCommon());
 #elif !defined(__APPLE__)
 	appendExtraFolders("XDG_CONFIG_DIRS", "/etc/xdg", homes);
@@ -282,7 +282,7 @@ PlatformFolders::~PlatformFolders() {
 }
 
 std::string PlatformFolders::getDocumentsFolder() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetWindowsFolder(CSIDL_PERSONAL, "Failed to find My Documents folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kDocumentsFolderType, "Failed to find Documents Folder");
@@ -292,7 +292,7 @@ std::string PlatformFolders::getDocumentsFolder() const {
 }
 
 std::string PlatformFolders::getDesktopFolder() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetWindowsFolder(CSIDL_DESKTOP, "Failed to find Desktop folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kDesktopFolderType, "Failed to find Desktop folder");
@@ -302,7 +302,7 @@ std::string PlatformFolders::getDesktopFolder() const {
 }
 
 std::string PlatformFolders::getPicturesFolder() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetWindowsFolder(CSIDL_MYPICTURES, "Failed to find My Pictures folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kPictureDocumentsFolderType, "Failed to find Picture folder");
@@ -312,7 +312,7 @@ std::string PlatformFolders::getPicturesFolder() const {
 }
 
 std::string PlatformFolders::getDownloadFolder1() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	//Pre Vista. Files was downloaded to the desktop
 	return GetWindowsFolder(CSIDL_DESKTOP, "Failed to find My Downloads (Desktop) folder");
 #elif defined(__APPLE__)
@@ -323,7 +323,7 @@ std::string PlatformFolders::getDownloadFolder1() const {
 }
 
 std::string PlatformFolders::getMusicFolder() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetWindowsFolder(CSIDL_MYMUSIC, "Failed to find My Music folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kMusicDocumentsFolderType, "Failed to find Music folder");
@@ -333,7 +333,7 @@ std::string PlatformFolders::getMusicFolder() const {
 }
 
 std::string PlatformFolders::getVideoFolder() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetWindowsFolder(CSIDL_MYVIDEO, "Failed to find My Video folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kMovieDocumentsFolderType, "Failed to find Movie folder");
@@ -343,7 +343,7 @@ std::string PlatformFolders::getVideoFolder() const {
 }
 
 std::string PlatformFolders::getSaveGamesFolder1() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	//A dedicated Save Games folder was not introduced until Vista. For XP and older save games are most often saved in a normal folder named "My Games".
 	//Data that should not be user accessible should be placed under GetDataHome() instead
 	return GetWindowsFolder(CSIDL_PERSONAL, "Failed to find My Documents folder")+"\\My Games";
