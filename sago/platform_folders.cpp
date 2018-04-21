@@ -244,7 +244,6 @@ static void PlatformFoldersAddFromFile(const std::string& filename, std::map<std
 		std::string key = line.substr(0, splitPos);
 		std::string value = line.substr(splitPos+2, line.length()-splitPos-3);
 		folders[key] = value;
-		//std::cout << key << " : " << value << "\n";
 	}
 }
 
