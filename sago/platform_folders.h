@@ -218,9 +218,7 @@ public:
 private:
 	PlatformFolders(const PlatformFolders&);
 	PlatformFolders& operator=(const PlatformFolders&);
-#if defined(_WIN32)
-#elif defined(__APPLE__)
-#else
+#if !defined(_WIN32) && !defined(__APPLE__)
 	struct PlatformFoldersData;
 	PlatformFoldersData* data;
 #endif

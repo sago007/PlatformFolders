@@ -211,8 +211,7 @@ std::string getCacheDir() {
 void appendAdditionalDataDirectories(std::vector<std::string>& homes) {
 #if defined(_WIN32)
 	homes.push_back(GetAppDataCommon());
-#elif defined(__APPLE__)
-#else
+#elif !defined(__APPLE__)
 	appendExtraFolders("XDG_DATA_DIRS", "/usr/local/share/:/usr/share/", homes);
 #endif
 }
@@ -220,15 +219,12 @@ void appendAdditionalDataDirectories(std::vector<std::string>& homes) {
 void appendAdditionalConfigDirectories(std::vector<std::string>& homes) {
 #if defined(_WIN32)
 	homes.push_back(GetAppDataCommon());
-#elif defined(__APPLE__)
-#else
+#elif !defined(__APPLE__)
 	appendExtraFolders("XDG_CONFIG_DIRS", "/etc/xdg", homes);
 #endif
 }
 
-#if defined(_WIN32)
-#elif defined(__APPLE__)
-#else
+#if !defined(_WIN32) && !defined(__APPLE__)
 struct PlatformFolders::PlatformFoldersData {
 	std::map<std::string, std::string> folders;
 };
@@ -267,9 +263,7 @@ static void PlatformFoldersFillData(std::map<std::string, std::string>& folders)
 #endif
 
 PlatformFolders::PlatformFolders() {
-#if defined(_WIN32)
-#elif defined(__APPLE__)
-#else
+#if !defined(_WIN32) && !defined(__APPLE__)
 	this->data = new PlatformFolders::PlatformFoldersData();
 	try {
 		PlatformFoldersFillData(data->folders);
@@ -282,9 +276,7 @@ PlatformFolders::PlatformFolders() {
 }
 
 PlatformFolders::~PlatformFolders() {
-#if defined(_WIN32)
-#elif defined(__APPLE__)
-#else
+#if !defined(_WIN32) && !defined(__APPLE__)
 	delete this->data;
 #endif
 }
