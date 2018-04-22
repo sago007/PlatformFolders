@@ -33,7 +33,17 @@ SOFTWARE.
 #include <cstdlib>
 
 #ifdef _WIN32
+// Make sure we don't bring in all the extra junk with windows.h
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+// stringapiset.h depends on this
 #include <windows.h>
+// For SUCCEEDED macro
+#include <winerror.h>
+// For WideCharToMultiByte
+#include <stringapiset.h>
+// For SHGetFolderPathW and various CSIDL "magic numbers"
 #include <shlobj.h>
 
 static std::string win32_utf16_to_utf8(const wchar_t* wstr)
