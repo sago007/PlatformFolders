@@ -63,7 +63,7 @@ build_script:
 # to run your custom scripts instead of automatic tests
 # The %CONFIGURATION% and %PLATFORM% variables are set from Appveyor as env-vars
 test_script:
-  - cmd: MSBuild.exe /p:Configuration="%CONFIGURATION%" /p:Platform="%PLATFORM%" /v:minimal "%APPVEYOR_BUILD_FOLDER%"\build\RUN_TESTS.vcxproj
+  - cmd: IF "%PLATFORM%"=="x86" (MSBuild.exe "%APPVEYOR_BUILD_FOLDER%"\build\RUN_TESTS.vcxproj /p:Configuration="%CONFIGURATION%" /p:Platform="Win32" /v:minimal /m) ELSE (MSBuild.exe "%APPVEYOR_BUILD_FOLDER%"\build\RUN_TESTS.vcxproj /p:Configuration="%CONFIGURATION%" /p:Platform="%PLATFORM%" /v:minimal /m)
 
 #---------------------------------#
 #        global handlers          #
