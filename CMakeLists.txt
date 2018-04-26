@@ -109,17 +109,5 @@ install(FILES
 include(CTest)
 # BUILD_TESTING is defined (default ON) in CTest
 if(BUILD_TESTING)
-	set(_PROJECT_TEST_NAME "${PROJECT_NAME}_test")
-	add_executable(${_PROJECT_TEST_NAME} platform_folders.cpp)
-
-	target_link_libraries(${_PROJECT_TEST_NAME} PRIVATE ${PROJECT_NAME})
-
-	# Since tests aren't installed, no reason to give it an INSTALL_INTERFACE
-	target_include_directories(${_PROJECT_TEST_NAME} PRIVATE
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sago>
-	)
-
-	# Creates the "MyTest" test that runs the test executable created above
-	# This is triggered by things like "make test"
-	add_test(NAME MyTest COMMAND ${_PROJECT_TEST_NAME})
+	add_subdirectory(test)
 endif()

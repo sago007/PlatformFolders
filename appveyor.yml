@@ -69,6 +69,7 @@ test_script:
 #        global handlers          #
 #---------------------------------#
 
-# on build failure dump cmake err log
+# on build failure dump cmake and test err log
 on_failure:
   - cmd: IF exist "%APPVEYOR_BUILD_FOLDER%"\build\CMakeFiles\CMakeError.log (type "%APPVEYOR_BUILD_FOLDER%"\build\CMakeFiles\CMakeError.log)
+  - cmd: IF exist "%APPVEYOR_BUILD_FOLDER%"\build\Testing\Temporary\LastTest.log (type "%APPVEYOR_BUILD_FOLDER%"\build\Testing\Temporary\LastTest.log)
