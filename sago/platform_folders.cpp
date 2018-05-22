@@ -37,8 +37,7 @@ SOFTWARE.
 #include <windows.h>
 #include <shlobj.h>
 
-static std::string win32_utf16_to_utf8(const wchar_t* wstr)
-{
+static std::string win32_utf16_to_utf8(const wchar_t* wstr) {
 	std::string res;
 	// If the 6th parameter is 0 then WideCharToMultiByte returns the number of bytes needed to store the result.
 	int actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, 0, NULL, NULL);
@@ -59,8 +58,7 @@ static std::string win32_utf16_to_utf8(const wchar_t* wstr)
 static std::string GetWindowsFolder(int folderId, const char* errorMsg) {
 	wchar_t szPath[MAX_PATH];
 	szPath[0] = 0;
-	if ( !SUCCEEDED( SHGetFolderPathW( NULL, folderId, NULL, 0, szPath ) ) )
-	{
+	if ( !SUCCEEDED( SHGetFolderPathW( NULL, folderId, NULL, 0, szPath ) ) ) {
 		throw std::runtime_error(errorMsg);
 	}
 	return win32_utf16_to_utf8(szPath);
@@ -126,7 +124,7 @@ static std::string getHome() {
 		res = homeEnv;
 		return res;
 	}
-	struct passwd *pw = getpwuid(uid);
+	struct passwd* pw = getpwuid(uid);
 	if (!pw) {
 		throw std::runtime_error("Unable to get passwd struct.");
 	}
@@ -275,7 +273,8 @@ PlatformFolders::PlatformFolders() {
 	this->data = new PlatformFolders::PlatformFoldersData();
 	try {
 		PlatformFoldersFillData(data->folders);
-	} catch (...) {
+	}
+	catch (...) {
 		delete this->data;
 		throw;
 	}
@@ -363,6 +362,33 @@ std::string PlatformFolders::getSaveGamesFolder1() const {
 #endif
 }
 
+std::string getDesktopFolder() {
+	return PlatformFolders().getDesktopFolder();
+}
+
+std::string getDocumentsFolder() {
+	return PlatformFolders().getDocumentsFolder();
+}
+
+std::string getDownloadFolder1() {
+	return PlatformFolders().getDownloadFolder1();
+}
+
+std::string getPicturesFolder() {
+	return PlatformFolders().getPicturesFolder();
+}
+
+std::string getMusicFolder() {
+	return PlatformFolders().getMusicFolder();
+}
+
+std::string getVideoFolder() {
+	return PlatformFolders().getVideoFolder();
+}
+
+std::string getSaveGamesFolder1() {
+	return PlatformFolders().getSaveGamesFolder1();
+}
 
 
 }  //namespace sago

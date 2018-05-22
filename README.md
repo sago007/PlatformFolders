@@ -66,14 +66,13 @@ int main()
 	cout << "Config: " << sago::getConfigHome() << "\n";
 	cout << "Data: " << sago::getDataHome() << "\n";
 	cout << "Cache: " << sago::getCacheDir() << "\n";
-	sago::PlatformFolders p;
-	cout << "Documents: " << p.getDocumentsFolder() << "\n";
-	cout << "Desktop: " << p.getDesktopFolder() << "\n";
-	cout << "Pictures: " << p.getPicturesFolder() << "\n";
-	cout << "Music: " << p.getMusicFolder() << "\n";
-	cout << "Video: " << p.getVideoFolder() << "\n";
-	cout << "Download: " << p.getDownloadFolder1() << "\n";
-	cout << "Save Games 1: " << p.getSaveGamesFolder1() << "\n";
+	cout << "Documents: " << sago::getDocumentsFolder() << "\n";
+	cout << "Desktop: " << sago::getDesktopFolder() << "\n";
+	cout << "Pictures: " << sago::getPicturesFolder() << "\n";
+	cout << "Music: " << sago::getMusicFolder() << "\n";
+	cout << "Video: " << sago::getVideoFolder() << "\n";
+	cout << "Download: " << sago::getDownloadFolder1() << "\n";
+	cout << "Save Games 1: " << sago::getSaveGamesFolder1() << "\n";
 	return 0;
 }
 ```

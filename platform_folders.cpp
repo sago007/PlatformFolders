@@ -27,19 +27,17 @@
 #include <iostream>
 #include "sago/platform_folders.h"
 
-int main()
-{
+int main() {
 	std::cout << "Config: " << sago::getConfigHome() << "\n";
 	std::cout << "Data: " << sago::getDataHome() << "\n";
 	std::cout << "Cache: " << sago::getCacheDir() << "\n";
-	sago::PlatformFolders p;
-	std::cout << "Documents: " << p.getDocumentsFolder() << "\n";
-	std::cout << "Desktop: " << p.getDesktopFolder() << "\n";
-	std::cout << "Pictures: " << p.getPicturesFolder() << "\n";
-	std::cout << "Music: " << p.getMusicFolder() << "\n";
-	std::cout << "Video: " << p.getVideoFolder() << "\n";
-	std::cout << "Download: " << p.getDownloadFolder1() << "\n";
-	std::cout << "Save Games 1: " << p.getSaveGamesFolder1() << "\n";
+	std::cout << "Documents: " << sago::getDocumentsFolder() << "\n";
+	std::cout << "Desktop: " << sago::getDesktopFolder() << "\n";
+	std::cout << "Pictures: " << sago::getPicturesFolder() << "\n";
+	std::cout << "Music: " << sago::getMusicFolder() << "\n";
+	std::cout << "Video: " << sago::getVideoFolder() << "\n";
+	std::cout << "Download: " << sago::getDownloadFolder1() << "\n";
+	std::cout << "Save Games 1: " << sago::getSaveGamesFolder1() << "\n";
 	std::vector<std::string> extraData;
 	sago::appendAdditionalDataDirectories(extraData);
 	for (size_t i=0; i < extraData.size(); ++i) {
