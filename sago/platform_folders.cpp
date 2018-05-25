@@ -203,7 +203,7 @@ std::string getCacheDir() {
 #elif defined(__APPLE__)
 	return GetMacFolder(kCachedDataFolderType, "Failed to find the Application Support Folder");
 #else
-	return getLinuxFolderDefault("XDG_CONFIG_HOME", ".cache");
+	return getLinuxFolderDefault("XDG_CACHE_HOME", ".cache");
 #endif
 }
 
