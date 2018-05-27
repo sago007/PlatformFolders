@@ -151,8 +151,7 @@ std::string getVideoFolder();
  * The base folder for storring saved games.
  * You must add the program name to it like this:
  * @code{.cpp}
- * PlatformFolders pf;
- * string saved_games_folder = pf.getSaveGamesFolder1()+"/My Program Name/";
+ * string saved_games_folder = sago::getSaveGamesFolder1()+"/My Program Name/";
  * @endcode
  * @note Windows: This is an XP compatible version and returns the path to "My Games" in Documents. Vista and later has an official folder.
  * @note Linux: XDF does not define a folder for saved games. This will just return the same as GetDataHome()
