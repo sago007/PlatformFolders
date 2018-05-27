@@ -1,4 +1,4 @@
-# PlatformFolders [![Build Status](https://travis-ci.org/sago007/PlatformFolders.svg?branch=master)](https://travis-ci.org/sago007/PlatformFolders) [![AppVeyor](https://img.shields.io/appveyor/ci/sago007/PlatformFolders.svg?label=Windows)](https://ci.appveyor.com/project/sago007/platformfolders) [![license](https://img.shields.io/github/license/sago007/PlatformFolders.svg)](https://raw.githubusercontent.com/sago007/PlatformFolders/master/LICENSE)
+# PlatformFolders [![Build Status](https://travis-ci.org/sago007/PlatformFolders.svg?branch=master)](https://travis-ci.org/sago007/PlatformFolders) [![AppVeyor](https://img.shields.io/appveyor/ci/sago007/PlatformFolders.svg?label=Windows)](https://ci.appveyor.com/project/sago007/platformfolders) [![license](https://img.shields.io/github/license/sago007/PlatformFolders.svg)](https://raw.githubusercontent.com/sago007/PlatformFolders/master/LICENSE) [![Join the chat at https://gitter.im/PlatformFolders/Lobby](https://badges.gitter.im/PlatformFolders/Lobby.svg)](https://gitter.im/PlatformFolders/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/729e36adcf5c4523bd136de1b33441cb)](https://www.codacy.com/app/github_43/PlatformFolders?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sago007/PlatformFolders&amp;utm_campaign=Badge_Grade)
 
 A C++ library to look for special directories like "My Documents" and "%APPDATA%" so that you do not need to write Linux, Windows and Mac OS X specific code
 
@@ -22,9 +22,7 @@ Both are properly more mature than this library. However they are both parts of 
 
 # Documentation
 
-Aside from this page there are also Doxygen available:
-
-  * 3.0: http://sago007.github.io/PlatformFolders/html/doxygen/3.0/
+Aside from this page there are also Doxygen available at http://sago007.github.io/PlatformFolders/html/doxygen/
 
 # Windows support
 For Windows the folders are fetched using SHGetFolderPath.
