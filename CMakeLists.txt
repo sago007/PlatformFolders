@@ -39,6 +39,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	target_link_libraries(${PROJECT_NAME} PRIVATE "${_CoreServices_FRAMEWORK}")
 endif()
 
+# Windows 7 or newer
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0601 -DWINVER=0x0601")
+
 # Defines standardized defaults for install paths
 include(GNUInstallDirs)
 # For the config and configversion macros

@@ -55,25 +55,37 @@ static std::string win32_utf16_to_utf8(const wchar_t* wstr) {
 	return res;
 }
 
-static std::string GetWindowsFolder(int folderId, const char* errorMsg) {
-	wchar_t szPath[MAX_PATH];
-	szPath[0] = 0;
-	if ( !SUCCEEDED( SHGetFolderPathW( NULL, folderId, NULL, 0, szPath ) ) ) {
+class FreeCoTaskMemory {
+	LPWSTR pointer = NULL;
+public:
+	FreeCoTaskMemory(LPWSTR pointer) : pointer(pointer) {};
+	~FreeCoTaskMemory() {
+		CoTaskMemFree(pointer);
+	}
+};
+
+static std::string GetKnownWindowsFolder(REFKNOWNFOLDERID folderId, const char* errorMsg) {
+	LPWSTR wszPath = NULL;
+	HRESULT hr;
+	hr = SHGetKnownFolderPath(folderId, KF_FLAG_CREATE, NULL, &wszPath);
+	FreeCoTaskMemory scopeBoundMemory(wszPath);
+
+	if (!SUCCEEDED(hr)) {
 		throw std::runtime_error(errorMsg);
 	}
-	return win32_utf16_to_utf8(szPath);
+	return win32_utf16_to_utf8(wszPath);
 }
 
 static std::string GetAppData() {
-	return GetWindowsFolder(CSIDL_APPDATA, "RoamingAppData could not be found");
+	return GetKnownWindowsFolder(FOLDERID_RoamingAppData, "RoamingAppData could not be found");
 }
 
 static std::string GetAppDataCommon() {
-	return GetWindowsFolder(CSIDL_COMMON_APPDATA, "Common appdata could not be found");
+	return GetKnownWindowsFolder(FOLDERID_ProgramData, "ProgramData could not be found");
 }
 
 static std::string GetAppDataLocal() {
-	return GetWindowsFolder(CSIDL_LOCAL_APPDATA, "LocalAppData could not be found");
+	return GetKnownWindowsFolder(FOLDERID_LocalAppData, "LocalAppData could not be found");
 }
 #elif defined(__APPLE__)
 #include <CoreServices/CoreServices.h>
@@ -291,7 +303,7 @@ PlatformFolders::~PlatformFolders() {
 
 std::string PlatformFolders::getDocumentsFolder() const {
 #if defined(_WIN32)
-	return GetWindowsFolder(CSIDL_PERSONAL, "Failed to find My Documents folder");
+	return GetKnownWindowsFolder(FOLDERID_Documents, "Failed to find My Documents folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kDocumentsFolderType, "Failed to find Documents Folder");
 #else
@@ -301,7 +313,7 @@ std::string PlatformFolders::getDocumentsFolder() const {
 
 std::string PlatformFolders::getDesktopFolder() const {
 #if defined(_WIN32)
-	return GetWindowsFolder(CSIDL_DESKTOP, "Failed to find Desktop folder");
+	return GetKnownWindowsFolder(FOLDERID_Desktop, "Failed to find Desktop folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kDesktopFolderType, "Failed to find Desktop folder");
 #else
@@ -311,7 +323,7 @@ std::string PlatformFolders::getDesktopFolder() const {
 
 std::string PlatformFolders::getPicturesFolder() const {
 #if defined(_WIN32)
-	return GetWindowsFolder(CSIDL_MYPICTURES, "Failed to find My Pictures folder");
+	return GetKnownWindowsFolder(FOLDERID_Pictures, "Failed to find My Pictures folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kPictureDocumentsFolderType, "Failed to find Picture folder");
 #else
@@ -321,8 +333,7 @@ std::string PlatformFolders::getPicturesFolder() const {
 
 std::string PlatformFolders::getDownloadFolder1() const {
 #if defined(_WIN32)
-	//Pre Vista. Files was downloaded to the desktop
-	return GetWindowsFolder(CSIDL_DESKTOP, "Failed to find My Downloads (Desktop) folder");
+	return GetKnownWindowsFolder(FOLDERID_Downloads, "Failed to find My Downloads folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kDownloadsFolderType, "Failed to find Download folder");
 #else
@@ -332,7 +343,7 @@ std::string PlatformFolders::getDownloadFolder1() const {
 
 std::string PlatformFolders::getMusicFolder() const {
 #if defined(_WIN32)
-	return GetWindowsFolder(CSIDL_MYMUSIC, "Failed to find My Music folder");
+	return GetKnownWindowsFolder(FOLDERID_Music, "Failed to find My Music folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kMusicDocumentsFolderType, "Failed to find Music folder");
 #else
@@ -342,7 +353,7 @@ std::string PlatformFolders::getMusicFolder() const {
 
 std::string PlatformFolders::getVideoFolder() const {
 #if defined(_WIN32)
-	return GetWindowsFolder(CSIDL_MYVIDEO, "Failed to find My Video folder");
+	return GetKnownWindowsFolder(FOLDERID_Videos, "Failed to find My Video folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kMovieDocumentsFolderType, "Failed to find Movie folder");
 #else
@@ -354,7 +365,7 @@ std::string PlatformFolders::getSaveGamesFolder1() const {
 #if defined(_WIN32)
 	//A dedicated Save Games folder was not introduced until Vista. For XP and older save games are most often saved in a normal folder named "My Games".
 	//Data that should not be user accessible should be placed under GetDataHome() instead
-	return GetWindowsFolder(CSIDL_PERSONAL, "Failed to find My Documents folder")+"\\My Games";
+	return GetKnownWindowsFolder(FOLDERID_Documents, "Failed to find My Documents folder")+"\\My Games";
 #elif defined(__APPLE__)
 	return GetMacFolder(kApplicationSupportFolderType, "Failed to find Application Support Folder");
 #else
@@ -370,8 +381,12 @@ std::string getDocumentsFolder() {
 	return PlatformFolders().getDocumentsFolder();
 }
 
-std::string getDownloadFolder1() {
+std::string getDownloadFolder() {
 	return PlatformFolders().getDownloadFolder1();
+}
+
+std::string getDownloadFolder1() {
+	return getDownloadFolder();
 }
 
 std::string getPicturesFolder() {
@@ -388,6 +403,14 @@ std::string getVideoFolder() {
 
 std::string getSaveGamesFolder1() {
 	return PlatformFolders().getSaveGamesFolder1();
+}
+
+std::string getSaveGamesFolder2() {
+#ifdef _WIN32
+	return GetKnownWindowsFolder(FOLDERID_SavedGames, "Failed to find Saved Games folder");
+#else
+	return PlatformFolders().getSaveGamesFolder1();
+#endif
 }
 
 
