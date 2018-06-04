@@ -25,12 +25,19 @@ set_target_properties(platform_folders PROPERTIES
 	PUBLIC_HEADER "sago/platform_folders.h"
 )
 
-# Require (minimum) C++11 when using header
-# PRIVATE means only at compile time
-target_compile_features(platform_folders
-	PUBLIC cxx_std_11
-	PRIVATE cxx_nullptr
-)
+# cxx_std_11 requires v3.8
+if(CMAKE_VERSION VERSION_LESS "3.8.0")
+	# Use old method of forcing C++11
+	set(CMAKE_CXX_STANDARD 11)
+	set(CMAKE_CXX_STANDARD_REQUIRED true)
+else()
+	# Require (minimum) C++11 when using header
+	# PRIVATE means only at compile time
+	target_compile_features(platform_folders PUBLIC cxx_std_11)
+endif()
+
+# cxx_nullptr exists in v3.1
+target_compile_features(platform_folders PRIVATE cxx_nullptr)
 
 # Apple requires linking to CoreServices
 # Check sys name instead of "APPLE" for cross-compilation

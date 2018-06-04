@@ -3,13 +3,26 @@ add_library(platformfolders_internal_tester
 	"tester.cpp"
 )
 
+# cxx_std_11 requires v3.8
+if(CMAKE_VERSION VERSION_LESS "3.8.0")
+	# Use old method of forcing C++11
+	set(CMAKE_CXX_STANDARD 11)
+	set(CMAKE_CXX_STANDARD_REQUIRED true)
+else()
+	# Require (minimum) C++11 when using header
+	# PRIVATE means only at compile time
+	target_compile_features(platformfolders_internal_tester
+		PUBLIC cxx_std_11
+	)
+endif()
+
+# cxx_range_for exists in v3.1
 target_compile_features(platformfolders_internal_tester
-	PUBLIC cxx_std_11
 	PRIVATE cxx_range_for
 )
 
-target_include_directories(platformfolders_internal_tester PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+target_include_directories(platformfolders_internal_tester
+	PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
 # Easily define a new test to run
@@ -18,9 +31,6 @@ macro(_def_test _name)
 	target_link_libraries(${_name} PRIVATE
 		platform_folders
 		platformfolders_internal_tester
-	)
-	target_compile_features(${_name} PRIVATE
-		cxx_std_11
 	)
 	add_test(NAME "${_name}" COMMAND "${_name}")
 endmacro()
