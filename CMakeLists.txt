@@ -58,8 +58,16 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	target_link_libraries(platform_folders PRIVATE "${_CoreServices_FRAMEWORK}")
 endif()
 
-# Windows 7 or newer
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x0601 -DWINVER=0x0601")
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	# You can pass these when calling Cmake, so don't override if the user does
+	if(NOT _WIN32_WINNT AND NOT WINVER)
+		target_compile_definitions(platform_folders PRIVATE
+			_WIN32_WINNT=0x0601
+			WINVER=0x0601
+		)
+	endif()
+endif()
+
 
 # Cmake's find_package search path is different based on the system
 # See https://cmake.org/cmake/help/latest/command/find_package.html for the list
