@@ -29,22 +29,31 @@ SOFTWARE.
 #include "platform_folders.h"
 #include <iostream>
 #include <stdexcept>
-#include <string.h>
 #include <cstdio>
 #include <cstdlib>
 
-#if defined(_WIN32)
+#ifdef _WIN32
+// Make sure we don't bring in all the extra junk with windows.h
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+// stringapiset.h depends on this
 #include <windows.h>
+// For SUCCEEDED macro
+#include <winerror.h>
+// For WideCharToMultiByte
+#include <stringapiset.h>
+// For SHGetFolderPathW and various CSIDL "magic numbers"
 #include <shlobj.h>
 
 static std::string win32_utf16_to_utf8(const wchar_t* wstr) {
 	std::string res;
 	// If the 6th parameter is 0 then WideCharToMultiByte returns the number of bytes needed to store the result.
-	int actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, NULL, 0, NULL, NULL);
+	int actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, nullptr, 0, nullptr, nullptr);
 	if (actualSize > 0) {
 		//If the converted UTF-8 string could not be in the initial buffer. Allocate one that can hold it.
 		std::vector<char> buffer(actualSize);
-		actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &buffer[0], buffer.size(), NULL, NULL);
+		actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &buffer[0], buffer.size(), nullptr, nullptr);
 		res = buffer.data();
 	}
 	if (actualSize == 0) {
@@ -58,7 +67,7 @@ static std::string win32_utf16_to_utf8(const wchar_t* wstr) {
 static std::string GetWindowsFolder(int folderId, const char* errorMsg) {
 	wchar_t szPath[MAX_PATH];
 	szPath[0] = 0;
-	if ( !SUCCEEDED( SHGetFolderPathW( NULL, folderId, NULL, 0, szPath ) ) ) {
+	if ( !SUCCEEDED( SHGetFolderPathW( nullptr, folderId, nullptr, 0, szPath ) ) ) {
 		throw std::runtime_error(errorMsg);
 	}
 	return win32_utf16_to_utf8(szPath);
@@ -151,7 +160,7 @@ static std::string getLinuxFolderDefault(const char* envName, const char* defaul
 static void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders) {
 	std::vector<char> buffer(envValue, envValue + std::strlen(envValue) + 1);
 	char* p = std::strtok ( &buffer[0], ":");
-	while (p != NULL) {
+	while (p != nullptr) {
 		if (p[0] == '/') {
 			folders.push_back(p);
 		}
@@ -160,7 +169,7 @@ static void appendExtraFoldersTokenizer(const char* envName, const char* envValu
 			//The XDG documentation indicates that the folder should be ignored but that the program should continue.
 			std::cerr << "Skipping path \"" << p << "\" in \"" << envName << "\" because it does not start with a \"/\"\n";
 		}
-		p = std::strtok (NULL, ":");
+		p = std::strtok (nullptr, ":");
 	}
 }
 
@@ -178,7 +187,7 @@ static void appendExtraFolders(const char* envName, const char* defaultValue, st
 namespace sago {
 
 std::string getDataHome() {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetAppData();
 #elif defined(__APPLE__)
 	return GetMacFolder(kApplicationSupportFolderType, "Failed to find the Application Support Folder");
@@ -188,7 +197,7 @@ std::string getDataHome() {
 }
 
 std::string getConfigHome() {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetAppData();
 #elif defined(__APPLE__)
 	return GetMacFolder(kApplicationSupportFolderType, "Failed to find the Application Support Folder");
@@ -198,7 +207,7 @@ std::string getConfigHome() {
 }
 
 std::string getCacheDir() {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetAppDataLocal();
 #elif defined(__APPLE__)
 	return GetMacFolder(kCachedDataFolderType, "Failed to find the Application Support Folder");
@@ -208,26 +217,22 @@ std::string getCacheDir() {
 }
 
 void appendAdditionalDataDirectories(std::vector<std::string>& homes) {
-#if defined(_WIN32)
+#ifdef _WIN32
 	homes.push_back(GetAppDataCommon());
-#elif defined(__APPLE__)
-#else
+#elif !defined(__APPLE__)
 	appendExtraFolders("XDG_DATA_DIRS", "/usr/local/share/:/usr/share/", homes);
 #endif
 }
 
 void appendAdditionalConfigDirectories(std::vector<std::string>& homes) {
-#if defined(_WIN32)
+#ifdef _WIN32
 	homes.push_back(GetAppDataCommon());
-#elif defined(__APPLE__)
-#else
+#elif !defined(__APPLE__)
 	appendExtraFolders("XDG_CONFIG_DIRS", "/etc/xdg", homes);
 #endif
 }
 
-#if defined(_WIN32)
-#elif defined(__APPLE__)
-#else
+#if !defined(_WIN32) && !defined(__APPLE__)
 struct PlatformFolders::PlatformFoldersData {
 	std::map<std::string, std::string> folders;
 };
@@ -243,7 +248,6 @@ static void PlatformFoldersAddFromFile(const std::string& filename, std::map<std
 		std::string key = line.substr(0, splitPos);
 		std::string value = line.substr(splitPos+2, line.length()-splitPos-3);
 		folders[key] = value;
-		//std::cout << key << " : " << value << "\n";
 	}
 }
 
@@ -267,9 +271,7 @@ static void PlatformFoldersFillData(std::map<std::string, std::string>& folders)
 #endif
 
 PlatformFolders::PlatformFolders() {
-#if defined(_WIN32)
-#elif defined(__APPLE__)
-#else
+#if !defined(_WIN32) && !defined(__APPLE__)
 	this->data = new PlatformFolders::PlatformFoldersData();
 	try {
 		PlatformFoldersFillData(data->folders);
@@ -282,15 +284,13 @@ PlatformFolders::PlatformFolders() {
 }
 
 PlatformFolders::~PlatformFolders() {
-#if defined(_WIN32)
-#elif defined(__APPLE__)
-#else
+#if !defined(_WIN32) && !defined(__APPLE__)
 	delete this->data;
 #endif
 }
 
 std::string PlatformFolders::getDocumentsFolder() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetWindowsFolder(CSIDL_PERSONAL, "Failed to find My Documents folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kDocumentsFolderType, "Failed to find Documents Folder");
@@ -300,7 +300,7 @@ std::string PlatformFolders::getDocumentsFolder() const {
 }
 
 std::string PlatformFolders::getDesktopFolder() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetWindowsFolder(CSIDL_DESKTOP, "Failed to find Desktop folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kDesktopFolderType, "Failed to find Desktop folder");
@@ -310,7 +310,7 @@ std::string PlatformFolders::getDesktopFolder() const {
 }
 
 std::string PlatformFolders::getPicturesFolder() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetWindowsFolder(CSIDL_MYPICTURES, "Failed to find My Pictures folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kPictureDocumentsFolderType, "Failed to find Picture folder");
@@ -320,7 +320,7 @@ std::string PlatformFolders::getPicturesFolder() const {
 }
 
 std::string PlatformFolders::getDownloadFolder1() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	//Pre Vista. Files was downloaded to the desktop
 	return GetWindowsFolder(CSIDL_DESKTOP, "Failed to find My Downloads (Desktop) folder");
 #elif defined(__APPLE__)
@@ -331,7 +331,7 @@ std::string PlatformFolders::getDownloadFolder1() const {
 }
 
 std::string PlatformFolders::getMusicFolder() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetWindowsFolder(CSIDL_MYMUSIC, "Failed to find My Music folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kMusicDocumentsFolderType, "Failed to find Music folder");
@@ -341,7 +341,7 @@ std::string PlatformFolders::getMusicFolder() const {
 }
 
 std::string PlatformFolders::getVideoFolder() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	return GetWindowsFolder(CSIDL_MYVIDEO, "Failed to find My Video folder");
 #elif defined(__APPLE__)
 	return GetMacFolder(kMovieDocumentsFolderType, "Failed to find Movie folder");
@@ -351,7 +351,7 @@ std::string PlatformFolders::getVideoFolder() const {
 }
 
 std::string PlatformFolders::getSaveGamesFolder1() const {
-#if defined(_WIN32)
+#ifdef _WIN32
 	//A dedicated Save Games folder was not introduced until Vista. For XP and older save games are most often saved in a normal folder named "My Games".
 	//Data that should not be user accessible should be placed under GetDataHome() instead
 	return GetWindowsFolder(CSIDL_PERSONAL, "Failed to find My Documents folder")+"\\My Games";

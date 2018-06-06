@@ -30,5 +30,9 @@ before_script:
 script:
   # Run cmake, then compile and run tests with make
   - cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE .. && make -j$(nproc) && make test
+after_failure:
+  # Dumps any logs so you can read the stderr
+  - if [[ -e 'Testing/Temporary/LastTest.log' ]]; then cat 'Testing/Temporary/LastTest.log'; fi
+  - if [[ -e 'CMakeFiles/CMakeError.log' ]]; then cat 'CMakeFiles/CMakeError.log'; fi
 notifications:
   email: false

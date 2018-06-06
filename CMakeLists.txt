@@ -1,24 +1,43 @@
-cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
+# For target_compile_features
+cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 project(platform_folders VERSION 3.2.0 LANGUAGES CXX)
 
 # Since it's off, the library will be static by default
 option(BUILD_SHARED_LIBS "Build shared instead of static." OFF)
 
-add_library(${PROJECT_NAME}
+add_library(platform_folders
 	sago/platform_folders.cpp
 )
 
-# Where to search for the header
-# The BUILD/INSTALL interface expressions are for exporting
-target_include_directories(${PROJECT_NAME} PRIVATE
+# Defines standardized defaults for install paths
+include(GNUInstallDirs)
+# Where to search for the header while building
+target_include_directories(platform_folders PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sago>
-	$<INSTALL_INTERFACE:sago>
+	# Controls where #include <sago/platform_folders.h> starts to look from
+	# So /usr/include/<sago/platform_folders.h>
+	# or C:\Program Files\platform_folders\include\<sago/platform_folders.h>
+	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 # Define the header as public for installation
-set_target_properties(${PROJECT_NAME} PROPERTIES
+set_target_properties(platform_folders PROPERTIES
 	PUBLIC_HEADER "sago/platform_folders.h"
 )
+
+# cxx_std_11 requires v3.8
+if(CMAKE_VERSION VERSION_LESS "3.8.0")
+	# Use old method of forcing C++11
+	set(CMAKE_CXX_STANDARD 11)
+	set(CMAKE_CXX_STANDARD_REQUIRED true)
+else()
+	# Require (minimum) C++11 when using header
+	# PRIVATE means only at compile time
+	target_compile_features(platform_folders PUBLIC cxx_std_11)
+endif()
+
+# cxx_nullptr exists in v3.1
+target_compile_features(platform_folders PRIVATE cxx_nullptr)
 
 # Apple requires linking to CoreServices
 # Check sys name instead of "APPLE" for cross-compilation
@@ -36,55 +55,56 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	endif()
 	# Link to the CoreServices framework. This also sets the correct linking options
 	# "If the library file is in a Mac OSX framework, the Headers directory of the framework will also be processed as a usage requirement."
-	target_link_libraries(${PROJECT_NAME} PRIVATE "${_CoreServices_FRAMEWORK}")
+	target_link_libraries(platform_folders PRIVATE "${_CoreServices_FRAMEWORK}")
 endif()
 
-# Defines standardized defaults for install paths
-include(GNUInstallDirs)
-# For the config and configversion macros
-include(CMakePackageConfigHelpers)
-
-# Controls what dir to prefix for the lib, so <sago/platform_folders.h>
-set(_PROJECT_INSTALL_PREFIX_DIR "sago")
-# Controls where the exports, config, and configversion files install to
-set(_PROJECT_INSTALL_CMAKE_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/cmake/${_PROJECT_INSTALL_PREFIX_DIR}")
+# Cmake's find_package search path is different based on the system
+# See https://cmake.org/cmake/help/latest/command/find_package.html for the list
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	# Controls where the exports, config, and configversion files install to
+	set(_PROJECT_INSTALL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/cmake")
+else()
+	# When calling find_package(<name>)
+	# it looks for /usr/lib/cmake/<name>/<name>Config.cmake
+	set(_PROJECT_INSTALL_CMAKE_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/platform_folders")
+endif()
 
 # Gives "Make install" esque operations a location to install to...
 # and creates a .cmake file to be exported
-install(TARGETS ${PROJECT_NAME}
-	EXPORT "${PROJECT_NAME}-targets"
-	LIBRARY DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}/${_PROJECT_INSTALL_PREFIX_DIR}"
-	ARCHIVE DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}/${_PROJECT_INSTALL_PREFIX_DIR}"
-	# Tells it where to put your headers if any set by set_target_properties
-	PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_FULL_INCLUDEDIR}/${_PROJECT_INSTALL_PREFIX_DIR}"
-	# Tells export where your includes folder is | Note that the private include path is not needed here
-	INCLUDES DESTINATION "${CMAKE_INSTALL_FULL_INCLUDEDIR}/${_PROJECT_INSTALL_PREFIX_DIR}"
+install(TARGETS platform_folders
+	EXPORT "platform_folders-targets"
+	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+	ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+	# Tells it where to put the header files
+	PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/sago"
 )
 
 # "The install(TARGETS) and install(EXPORT) commands work together to install a target and a file to help import it"
 # Installs a cmake file which external projects can import.
-install(EXPORT "${PROJECT_NAME}-targets"
+install(EXPORT "platform_folders-targets"
+	NAMESPACE sago::
 	DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
 )
 
 # "The export command is used to generate a file exporting targets from a project build tree"
 # Creates an import file for external projects which are aware of the build tree.
 # May be useful for cross-compiling
-export(TARGETS ${PROJECT_NAME}
-	FILE "${PROJECT_NAME}-exports.cmake"
+export(TARGETS platform_folders
+	FILE "platform_folders-exports.cmake"
 )
 
-configure_package_config_file("${PROJECT_NAME}Config.cmake.in"
-	"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+# For the config and configversion macros
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file("platform_foldersConfig.cmake.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfig.cmake"
 	# Tells the config file where it will be installed, so it can be correctly imported
 	INSTALL_DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
-	# This passes the variables to the cmake.in file, which uses them
-	PATH_VARS PROJECT_NAME
 )
 
 # Creates the project's ConfigVersion.cmake file
 # This allows for find_package() to use a version in the call
-write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfigVersion.cmake"
 	# This'll require versioning in the project() call
 	VERSION ${CMAKE_PROJECT_VERSION}
 	# Just assuming Semver is followed
@@ -93,8 +113,8 @@ write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Con
 
 # Install the ConfigVersion file, which is located in the build dir
 install(FILES
-		"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-		"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+		"${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfig.cmake"
+		"${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfigVersion.cmake"
 	DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
 )
 
@@ -102,17 +122,5 @@ install(FILES
 include(CTest)
 # BUILD_TESTING is defined (default ON) in CTest
 if(BUILD_TESTING)
-	set(_PROJECT_TEST_NAME "${PROJECT_NAME}_test")
-	add_executable(${_PROJECT_TEST_NAME} platform_folders.cpp)
-
-	target_link_libraries(${_PROJECT_TEST_NAME} PRIVATE ${PROJECT_NAME})
-
-	# Since tests aren't installed, no reason to give it an INSTALL_INTERFACE
-	target_include_directories(${_PROJECT_TEST_NAME} PRIVATE
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sago>
-	)
-
-	# Creates the "MyTest" test that runs the test executable created above
-	# This is triggered by things like "make test"
-	add_test(NAME MyTest COMMAND ${_PROJECT_TEST_NAME})
+	add_subdirectory(test)
 endif()
