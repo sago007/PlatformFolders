@@ -67,7 +67,7 @@ static std::string win32_utf16_to_utf8(const wchar_t* wstr) {
 class FreeCoTaskMemory {
 	LPWSTR pointer = NULL;
 public:
-	FreeCoTaskMemory(LPWSTR pointer) : pointer(pointer) {};
+	explicit FreeCoTaskMemory(LPWSTR pointer) : pointer(pointer) {};
 	~FreeCoTaskMemory() {
 		CoTaskMemFree(pointer);
 	}
