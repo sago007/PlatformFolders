@@ -36,8 +36,9 @@ int main() {
 	std::cout << "Pictures: " << sago::getPicturesFolder() << "\n";
 	std::cout << "Music: " << sago::getMusicFolder() << "\n";
 	std::cout << "Video: " << sago::getVideoFolder() << "\n";
-	std::cout << "Download: " << sago::getDownloadFolder1() << "\n";
+	std::cout << "Download: " << sago::getDownloadFolder() << "\n";
 	std::cout << "Save Games 1: " << sago::getSaveGamesFolder1() << "\n";
+	std::cout << "Save Games 2: " << sago::getSaveGamesFolder2() << "\n";
 	std::vector<std::string> extraData;
 	sago::appendAdditionalDataDirectories(extraData);
 	for (size_t i=0; i < extraData.size(); ++i) {

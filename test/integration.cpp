@@ -12,11 +12,13 @@ int main() {
 	// Test non-member functions
 	run_test(sago::getDesktopFolder());
 	run_test(sago::getDocumentsFolder());
+	run_test(sago::getDownloadFolder());
 	run_test(sago::getDownloadFolder1());
 	run_test(sago::getPicturesFolder());
 	run_test(sago::getMusicFolder());
 	run_test(sago::getVideoFolder());
 	run_test(sago::getSaveGamesFolder1());
+	run_test(sago::getSaveGamesFolder2());
 	// Test class methods
 	sago::PlatformFolders p;
 	run_test(p.getDocumentsFolder());

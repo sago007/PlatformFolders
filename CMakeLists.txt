@@ -58,6 +58,17 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	target_link_libraries(platform_folders PRIVATE "${_CoreServices_FRAMEWORK}")
 endif()
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	# You can pass these when calling Cmake, so don't override if the user does
+	if(NOT _WIN32_WINNT AND NOT WINVER)
+		target_compile_definitions(platform_folders PRIVATE
+			_WIN32_WINNT=0x0601
+			WINVER=0x0601
+		)
+	endif()
+endif()
+
+
 # Cmake's find_package search path is different based on the system
 # See https://cmake.org/cmake/help/latest/command/find_package.html for the list
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -123,4 +134,6 @@ include(CTest)
 # BUILD_TESTING is defined (default ON) in CTest
 if(BUILD_TESTING)
 	add_subdirectory(test)
+	add_executable(platform_folders_sample platform_folders.cpp)
+	target_link_libraries(platform_folders_sample PRIVATE platform_folders)
 endif()

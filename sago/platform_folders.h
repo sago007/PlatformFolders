@@ -124,7 +124,13 @@ std::string getDocumentsFolder();
 
 /**
  * The folder where files are downloaded.
- * @note Windows: This version is XP compatible and returns the Desktop. Vista and later has a dedicated folder.
+ * @return Absolute path to the folder where files are downloaded to.
+ */
+std::string getDownloadFolder();
+
+/**
+ * The folder where files are downloaded.
+ * @note This is provided for backward compatibility. Use getDownloadFolder instead.
  * @return Absolute path to the folder where files are downloaded to.
  */
 std::string getDownloadFolder1();
@@ -148,7 +154,7 @@ std::string getMusicFolder();
 std::string getVideoFolder();
 
 /**
- * The base folder for storring saved games.
+ * A base folder for storring saved games.
  * You must add the program name to it like this:
  * @code{.cpp}
  * string saved_games_folder = sago::getSaveGamesFolder1()+"/My Program Name/";
@@ -158,6 +164,20 @@ std::string getVideoFolder();
  * @return The folder base folder for storring save games.
  */
 std::string getSaveGamesFolder1();
+
+/**
+ * A base folder for storring saved games.
+ * You must add the program name to it like this:
+ * @code{.cpp}
+ * string saved_games_folder = sago::getSaveGamesFolder2()+"/My Program Name/";
+ * @endcode
+ * @note PlatformFolders provide different folders to for saved games as not all operating systems has support for Saved Games yet.
+ * It is recommended to pick the highest number (currently getSaveGamesFolder2) at the time your product enters production and stick with it
+ * @note Windows: This returns the "Saved Games" folder. This folder exist in Vista and later
+ * @note Linux: XDF does not define a folder for saved games. This will just return the same as GetDataHome()
+ * @return The folder base folder for storring save games.
+ */
+std::string getSaveGamesFolder2();
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
