@@ -24,12 +24,7 @@ Both are properly more mature than this library. However they are both parts of 
 
 ### Windows
 
-For Windows, the folders are fetched using SHGetFolderPath.
-
-The amount of supported folders differ from Windows version and this library targets XP and newer.\
-XP support will be dropped very soon.
-
-"Save Games" and "Downloads" should not be used, as they are undefined on XP.
+For Windows, the current version fetches the folders using SHGetKnownFolderPath. This requires Vista or newer.
 
 ### Linux
 
@@ -56,6 +51,7 @@ target_link_libraries(EXEORLIBNAME PRIVATE sago::platform_folders)
 ```
 
 Alternatively, you can just copy the [sago](https://github.com/sago007/PlatformFolders/tree/master/sago) folder into your program and manually link everything.
+If you use the last option: Remember to link to the CoreServices lib when compiling on Mac. This typically means passing "-framework CoreServices" during the linking phase.
 
 ### Building
 
@@ -91,19 +87,17 @@ This sample program gets all folders from the system:
 
 int main()
 {
-	using std::cout;
-
-	cout << "Config: " << sago::getConfigHome() << '\n';
-	cout << "Data: " << sago::getDataHome() << '\n';
-	cout << "Cache: " << sago::getCacheDir() << '\n';
-	sago::PlatformFolders p;
-	cout << "Documents: " << p.getDocumentsFolder() << "\n";
-	cout << "Desktop: " << p.getDesktopFolder() << "\n";
-	cout << "Pictures: " << p.getPicturesFolder() << "\n";
-	cout << "Music: " << p.getMusicFolder() << "\n";
-	cout << "Video: " << p.getVideoFolder() << "\n";
-	cout << "Download: " << p.getDownloadFolder1() << "\n";
-	cout << "Save Games 1: " << p.getSaveGamesFolder1() << "\n";
+	std::cout << "Config: " << sago::getConfigHome() << "\n";
+	std::cout << "Data: " << sago::getDataHome() << "\n";
+	std::cout << "Cache: " << sago::getCacheDir() << "\n";
+	std::cout << "Documents: " << sago::getDocumentsFolder() << "\n";
+	std::cout << "Desktop: " << sago::getDesktopFolder() << "\n";
+	std::cout << "Pictures: " << sago::getPicturesFolder() << "\n";
+	std::cout << "Music: " << sago::getMusicFolder() << "\n";
+	std::cout << "Video: " << sago::getVideoFolder() << "\n";
+	std::cout << "Download: " << sago::getDownloadFolder() << "\n";
+	std::cout << "Save Games 1: " << sago::getSaveGamesFolder1() << "\n";
+	std::cout << "Save Games 2: " << sago::getSaveGamesFolder2() << "\n";
 	return 0;
 }
 ```
@@ -123,6 +117,7 @@ Music: /home/poul/Musik
 Video: /home/poul/Videoklip
 Download: /home/poul/Hentede filer
 Save Games 1: /home/poul/.local/share
+Save Games 2: /home/poul/.local/share
 ```
 
 #### On Windows
@@ -136,8 +131,9 @@ Desktop: C:\users\poul\Skrivebord
 Pictures: C:\users\poul\Mine Billeder
 Music: C:\users\poul\Min Musik
 Video: C:\users\poul\Mine Film
-Download: C:\users\poul\Skrivebord
+Download: C:\users\poul\Downloads
 Save Games 1: C:\users\poul\Mine dokumenter\My Games
+Save Games 2: C:\users\poul\Saved Games
 ```
 
 #### On macOS
@@ -153,6 +149,7 @@ Music: /Users/poul/Music
 Video: /Users/poul/Movies
 Download: /Users/poul/Downloads
 Save Games 1: /Users/poul/Library/Application Support
+Save Games 2: /Users/poul/Library/Application Support
 ```
 
 ## Compiler Compatibility
