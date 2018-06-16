@@ -15,6 +15,7 @@ int main() {
 	run_test(sago::getDownloadFolder());
 	run_test(sago::getDownloadFolder1());
 	run_test(sago::getPicturesFolder());
+	run_test(sago::getPublicFolder());
 	run_test(sago::getMusicFolder());
 	run_test(sago::getVideoFolder());
 	run_test(sago::getSaveGamesFolder1());
