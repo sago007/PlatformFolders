@@ -142,6 +142,12 @@ std::string getDownloadFolder1();
 std::string getPicturesFolder();
 
 /**
+ * This returns the folder that can be used for sharing files with other users on the same system.
+ * @return Absolute path to the "Public" folder
+ */
+std::string getPublicFolder();
+
+/**
  * The folder where music is stored
  * @return Absolute path to the music folder
  */
@@ -207,6 +213,10 @@ public:
 	 * @return Absolute path to the "Picture" folder
 	 */
 	std::string getPicturesFolder() const;
+	/**
+	 * Use sago::getPublicFolder() instead! 
+	 */
+	std::string getPublicFolder() const;
 	/**
 	 * The folder where files are downloaded.
 	 * @note Windows: This version is XP compatible and returns the Desktop. Vista and later has a dedicated folder.

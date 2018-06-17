@@ -34,6 +34,7 @@ int main() {
 	std::cout << "Documents: " << sago::getDocumentsFolder() << "\n";
 	std::cout << "Desktop: " << sago::getDesktopFolder() << "\n";
 	std::cout << "Pictures: " << sago::getPicturesFolder() << "\n";
+	std::cout << "Public: " << sago::getPublicFolder() << "\n";
 	std::cout << "Music: " << sago::getMusicFolder() << "\n";
 	std::cout << "Video: " << sago::getVideoFolder() << "\n";
 	std::cout << "Download: " << sago::getDownloadFolder() << "\n";

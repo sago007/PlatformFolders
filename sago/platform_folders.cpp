@@ -32,6 +32,40 @@ SOFTWARE.
 #include <cstdio>
 #include <cstdlib>
 
+#ifndef _WIN32
+
+#include <pwd.h>
+#include <unistd.h>
+
+/**
+ * Retrives the effective user's home dir.
+ * If the user is running as root we ignore the HOME environment. It works badly with sudo.
+ * Writing to $HOME as root implies security concerns that a multiplatform program cannot be assumed to handle.
+ * @return The home directory. HOME environment is respected for non-root users if it exists.
+ */
+static std::string getHome() {
+	std::string res;
+	int uid = getuid();
+	const char* homeEnv = std::getenv("HOME");
+	if ( uid != 0 && homeEnv) {
+		//We only acknowlegde HOME if not root.
+		res = homeEnv;
+		return res;
+	}
+	struct passwd* pw = getpwuid(uid);
+	if (!pw) {
+		throw std::runtime_error("Unable to get passwd struct.");
+	}
+	const char* tempRes = pw->pw_dir;
+	if (!tempRes) {
+		throw std::runtime_error("User has no home directory");
+	}
+	res = tempRes;
+	return res;
+}
+
+#endif 
+
 #ifdef _WIN32
 // Make sure we don't bring in all the extra junk with windows.h
 #ifndef WIN32_LEAN_AND_MEAN
@@ -115,8 +149,6 @@ static std::string GetMacFolder(OSType folderType, const char* errorMsg) {
 #else
 #include <map>
 #include <fstream>
-#include <pwd.h>
-#include <unistd.h>
 #include <sys/types.h>
 // For strlen and strtok
 #include <cstring>
@@ -130,32 +162,7 @@ static void throwOnRelative(const char* envName, const char* envValue) {
 	}
 }
 
-/**
- * Retrives the effective user's home dir.
- * If the user is running as root we ignore the HOME environment. It works badly with sudo.
- * Writing to $HOME as root implies security concerns that a multiplatform program cannot be assumed to handle.
- * @return The home directory. HOME environment is respected for non-root users if it exists.
- */
-static std::string getHome() {
-	std::string res;
-	int uid = getuid();
-	const char* homeEnv = std::getenv("HOME");
-	if ( uid != 0 && homeEnv) {
-		//We only acknowlegde HOME if not root.
-		res = homeEnv;
-		return res;
-	}
-	struct passwd* pw = getpwuid(uid);
-	if (!pw) {
-		throw std::runtime_error("Unable to get passwd struct.");
-	}
-	const char* tempRes = pw->pw_dir;
-	if (!tempRes) {
-		throw std::runtime_error("User has no home directory");
-	}
-	res = tempRes;
-	return res;
-}
+
 
 static std::string getLinuxFolderDefault(const char* envName, const char* defaultRelativePath) {
 	std::string res;
@@ -338,6 +345,16 @@ std::string PlatformFolders::getPicturesFolder() const {
 #endif
 }
 
+std::string PlatformFolders::getPublicFolder() const {
+#ifdef _WIN32
+	return GetKnownWindowsFolder(FOLDERID_Public, "Failed to find the Public folder");
+#elif defined(__APPLE__)
+	return getHome()+"/Public";
+#else
+	return data->folders["XDG_PUBLICSHARE_DIR"];
+#endif
+}
+
 std::string PlatformFolders::getDownloadFolder1() const {
 #ifdef _WIN32
 	return GetKnownWindowsFolder(FOLDERID_Downloads, "Failed to find My Downloads folder");
@@ -398,6 +415,10 @@ std::string getDownloadFolder1() {
 
 std::string getPicturesFolder() {
 	return PlatformFolders().getPicturesFolder();
+}
+
+std::string getPublicFolder() {
+	return PlatformFolders().getPublicFolder();
 }
 
 std::string getMusicFolder() {
