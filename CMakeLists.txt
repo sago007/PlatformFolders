@@ -58,6 +58,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	target_link_libraries(platform_folders PRIVATE "${_CoreServices_FRAMEWORK}")
 endif()
 
+# Cmake's find_package search path is different based on the system
+# See https://cmake.org/cmake/help/latest/command/find_package.html for the list
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# You can pass these when calling Cmake, so don't override if the user does
 	if(NOT _WIN32_WINNT AND NOT WINVER)
@@ -66,12 +68,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			WINVER=0x0601
 		)
 	endif()
-endif()
-
-
-# Cmake's find_package search path is different based on the system
-# See https://cmake.org/cmake/help/latest/command/find_package.html for the list
-if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# Controls where the exports, config, and configversion files install to
 	set(_PROJECT_INSTALL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/cmake")
 else()
