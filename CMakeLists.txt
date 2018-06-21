@@ -79,7 +79,7 @@ endif()
 # Gives "Make install" esque operations a location to install to...
 # and creates a .cmake file to be exported
 install(TARGETS platform_folders
-	EXPORT "platform_folders-targets"
+	EXPORT "platform_foldersConfig"
 	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 	ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 	# Tells it where to put the header files
@@ -88,7 +88,7 @@ install(TARGETS platform_folders
 
 # "The install(TARGETS) and install(EXPORT) commands work together to install a target and a file to help import it"
 # Installs a cmake file which external projects can import.
-install(EXPORT "platform_folders-targets"
+install(EXPORT "platform_foldersConfig"
 	NAMESPACE sago::
 	DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
 )
@@ -103,12 +103,6 @@ export(TARGETS platform_folders
 # For the config and configversion macros
 include(CMakePackageConfigHelpers)
 
-configure_package_config_file("platform_foldersConfig.cmake.in"
-	"${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfig.cmake"
-	# Tells the config file where it will be installed, so it can be correctly imported
-	INSTALL_DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
-)
-
 # Creates the project's ConfigVersion.cmake file
 # This allows for find_package() to use a version in the call
 write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfigVersion.cmake"
@@ -120,7 +114,6 @@ write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/platform_foldersCo
 
 # Install the ConfigVersion file, which is located in the build dir
 install(FILES
-		"${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfig.cmake"
 		"${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfigVersion.cmake"
 	DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
 )
