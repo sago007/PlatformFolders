@@ -131,21 +131,6 @@ static std::string GetAppDataLocal() {
 	return GetKnownWindowsFolder(FOLDERID_LocalAppData, "LocalAppData could not be found");
 }
 #elif defined(__APPLE__)
-#include <CoreServices/CoreServices.h>
-
-static std::string GetMacFolder(OSType folderType, const char* errorMsg) {
-	std::string ret;
-	FSRef ref;
-	char path[PATH_MAX];
-	OSStatus err = FSFindFolder( kUserDomain, folderType, kCreateFolder, &ref );
-	if (err != noErr) {
-		throw std::runtime_error(errorMsg);
-	}
-	FSRefMakePath( &ref, (UInt8*)&path, PATH_MAX );
-	ret = path;
-	return ret;
-}
-
 #else
 #include <map>
 #include <fstream>
@@ -209,7 +194,7 @@ std::string getDataHome() {
 #ifdef _WIN32
 	return GetAppData();
 #elif defined(__APPLE__)
-	return GetMacFolder(kApplicationSupportFolderType, "Failed to find the Application Support Folder");
+	return getHome()+"/Library/Application Support";
 #else
 	return getLinuxFolderDefault("XDG_DATA_HOME", ".local/share");
 #endif
@@ -219,7 +204,7 @@ std::string getConfigHome() {
 #ifdef _WIN32
 	return GetAppData();
 #elif defined(__APPLE__)
-	return GetMacFolder(kApplicationSupportFolderType, "Failed to find the Application Support Folder");
+	return getHome()+"/Library/Application Support";
 #else
 	return getLinuxFolderDefault("XDG_CONFIG_HOME", ".config");
 #endif
@@ -229,7 +214,7 @@ std::string getCacheDir() {
 #ifdef _WIN32
 	return GetAppDataLocal();
 #elif defined(__APPLE__)
-	return GetMacFolder(kCachedDataFolderType, "Failed to find the Application Support Folder");
+	return getHome()+"/Library/Caches";
 #else
 	return getLinuxFolderDefault("XDG_CACHE_HOME", ".cache");
 #endif
@@ -319,7 +304,7 @@ std::string PlatformFolders::getDocumentsFolder() const {
 #ifdef _WIN32
 	return GetKnownWindowsFolder(FOLDERID_Documents, "Failed to find My Documents folder");
 #elif defined(__APPLE__)
-	return GetMacFolder(kDocumentsFolderType, "Failed to find Documents Folder");
+	return getHome()+"/Documents";
 #else
 	return data->folders["XDG_DOCUMENTS_DIR"];
 #endif
@@ -329,7 +314,7 @@ std::string PlatformFolders::getDesktopFolder() const {
 #ifdef _WIN32
 	return GetKnownWindowsFolder(FOLDERID_Desktop, "Failed to find Desktop folder");
 #elif defined(__APPLE__)
-	return GetMacFolder(kDesktopFolderType, "Failed to find Desktop folder");
+	return getHome()+"/Desktop";
 #else
 	return data->folders["XDG_DESKTOP_DIR"];
 #endif
@@ -339,7 +324,7 @@ std::string PlatformFolders::getPicturesFolder() const {
 #ifdef _WIN32
 	return GetKnownWindowsFolder(FOLDERID_Pictures, "Failed to find My Pictures folder");
 #elif defined(__APPLE__)
-	return GetMacFolder(kPictureDocumentsFolderType, "Failed to find Picture folder");
+	return getHome()+"/Pictures";
 #else
 	return data->folders["XDG_PICTURES_DIR"];
 #endif
@@ -359,7 +344,7 @@ std::string PlatformFolders::getDownloadFolder1() const {
 #ifdef _WIN32
 	return GetKnownWindowsFolder(FOLDERID_Downloads, "Failed to find My Downloads folder");
 #elif defined(__APPLE__)
-	return GetMacFolder(kDownloadsFolderType, "Failed to find Download folder");
+	return getHome()+"/Downloads";
 #else
 	return data->folders["XDG_DOWNLOAD_DIR"];
 #endif
@@ -369,7 +354,7 @@ std::string PlatformFolders::getMusicFolder() const {
 #ifdef _WIN32
 	return GetKnownWindowsFolder(FOLDERID_Music, "Failed to find My Music folder");
 #elif defined(__APPLE__)
-	return GetMacFolder(kMusicDocumentsFolderType, "Failed to find Music folder");
+	return getHome()+"/Music";
 #else
 	return data->folders["XDG_MUSIC_DIR"];
 #endif
@@ -379,7 +364,7 @@ std::string PlatformFolders::getVideoFolder() const {
 #ifdef _WIN32
 	return GetKnownWindowsFolder(FOLDERID_Videos, "Failed to find My Video folder");
 #elif defined(__APPLE__)
-	return GetMacFolder(kMovieDocumentsFolderType, "Failed to find Movie folder");
+	return getHome()+"/Movies";
 #else
 	return data->folders["XDG_VIDEOS_DIR"];
 #endif
@@ -391,7 +376,7 @@ std::string PlatformFolders::getSaveGamesFolder1() const {
 	//Data that should not be user accessible should be placed under GetDataHome() instead
 	return GetKnownWindowsFolder(FOLDERID_Documents, "Failed to find My Documents folder")+"\\My Games";
 #elif defined(__APPLE__)
-	return GetMacFolder(kApplicationSupportFolderType, "Failed to find Application Support Folder");
+	return getHome()+"/Library/Application Support";
 #else
 	return getDataHome();
 #endif

@@ -39,25 +39,6 @@ endif()
 # cxx_nullptr exists in v3.1
 target_compile_features(platform_folders PRIVATE cxx_nullptr)
 
-# Apple requires linking to CoreServices
-# Check sys name instead of "APPLE" for cross-compilation
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-	# Find the framework
-	# ref: https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/OSX_Technology_Overview/SystemFrameworks/SystemFrameworks.html
-	find_library(_CoreServices_FRAMEWORK
-		NAMES "CoreServices.framework" "CoreServices"
-		PATH_SUFFIXES "CoreServices"
-		PATHS "/System/Library/Frameworks"
-	)
-	# Make sure it was found
-	if(NOT _CoreServices_FRAMEWORK)
-		message(FATAL_ERROR "Could not find the CoreServices framework!")
-	endif()
-	# Link to the CoreServices framework. This also sets the correct linking options
-	# "If the library file is in a Mac OSX framework, the Headers directory of the framework will also be processed as a usage requirement."
-	target_link_libraries(platform_folders PRIVATE "${_CoreServices_FRAMEWORK}")
-endif()
-
 # Cmake's find_package search path is different based on the system
 # See https://cmake.org/cmake/help/latest/command/find_package.html for the list
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
