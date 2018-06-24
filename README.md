@@ -34,7 +34,9 @@ It should work on any Unix system that has the following headers available: `pwd
 
 ### macOS
 
-Uses the deprecated FSFindFolder (there is no C++ alternative), which requires the CoreServices framework during linking.
+Version 4.0.0 and forward uses hardcoded values for the directories on Mac OS X. Unlike the other operating systems the folders cannot be moved on a Mac and the translation is done in the UI.
+The versions 2.X and 3.X uses the deprecated FSFindFolder, which requires the CoreServices framework during linking.
+Version 1.X simple used the XDG specification.
 
 ## Usage
 
@@ -51,13 +53,13 @@ target_link_libraries(EXEORLIBNAME PRIVATE sago::platform_folders)
 ```
 
 Alternatively, you can just copy the [sago](https://github.com/sago007/PlatformFolders/tree/master/sago) folder into your program and manually link everything.
-If you use the last option: Remember to link to the CoreServices lib when compiling on Mac. This typically means passing "-framework CoreServices" during the linking phase.
+If you use the last option and are using a library version from before 4.0.0: Remember to link to the CoreServices lib when compiling on Mac. This typically means passing "-framework CoreServices" during the linking phase.
 
 ### Building
 
 **Notes:**
 
-* macOS requires the CoreServices framework during linking.
+* Until 4.0.0 macOS required the CoreServices framework during linking.
 * If you don't want to install, remove the `--target install` command.
 
 Linux/macOS:
