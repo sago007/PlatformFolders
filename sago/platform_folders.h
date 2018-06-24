@@ -38,38 +38,38 @@ SOFTWARE.
 namespace sago {
 
 /**
- * Retrives the base folder for storring data files.
+ * Retrives the base folder for storing data files.
  * You must add the program name yourself like this:
  * @code{.cpp}
  * string data_home = getDataHome()+"/My Program Name/";
  * @endcode
  * On Windows this defaults to %APPDATA% (Roaming profile)
  * On Linux this defaults to ~/.local/share but can be configured
- * @return The base folder for storring program data.
+ * @return The base folder for storing program data.
  */
 std::string getDataHome();
 
 /**
- * Retrives the base folder for storring config files.
+ * Retrives the base folder for storing config files.
  * You must add the program name yourself like this:
  * @code{.cpp}
  * string data_home = getConfigHome()+"/My Program Name/";
  * @endcode
  * On Windows this defaults to %APPDATA% (Roaming profile)
  * On Linux this defaults to ~/.config but can be configured
- * @return The base folder for storring config data.
+ * @return The base folder for storing config data.
  */
 std::string getConfigHome();
 
 /**
- * Retrives the base folder for storring cache files.
+ * Retrives the base folder for storing cache files.
  * You must add the program name yourself like this:
  * @code{.cpp}
  * string data_home = getCacheDir()+"/My Program Name/";
  * @endcode
  * On Windows this defaults to %APPDATALOCAL%
  * On Linux this defaults to ~/.cache but can be configured
- * @return The base folder for storring data that do not need to be backed up.
+ * @return The base folder for storing data that do not need to be backed up.
  */
 std::string getCacheDir();
 
@@ -136,7 +136,7 @@ std::string getDownloadFolder();
 std::string getDownloadFolder1();
 
 /**
- * The folder for storring the user's pictures.
+ * The folder for storing the user's pictures.
  * @return Absolute path to the "Picture" folder
  */
 std::string getPicturesFolder();
@@ -160,19 +160,19 @@ std::string getMusicFolder();
 std::string getVideoFolder();
 
 /**
- * A base folder for storring saved games.
+ * A base folder for storing saved games.
  * You must add the program name to it like this:
  * @code{.cpp}
  * string saved_games_folder = sago::getSaveGamesFolder1()+"/My Program Name/";
  * @endcode
  * @note Windows: This is an XP compatible version and returns the path to "My Games" in Documents. Vista and later has an official folder.
  * @note Linux: XDF does not define a folder for saved games. This will just return the same as GetDataHome()
- * @return The folder base folder for storring save games.
+ * @return The folder base folder for storing save games.
  */
 std::string getSaveGamesFolder1();
 
 /**
- * A base folder for storring saved games.
+ * A base folder for storing saved games.
  * You must add the program name to it like this:
  * @code{.cpp}
  * string saved_games_folder = sago::getSaveGamesFolder2()+"/My Program Name/";
@@ -181,7 +181,7 @@ std::string getSaveGamesFolder1();
  * It is recommended to pick the highest number (currently getSaveGamesFolder2) at the time your product enters production and stick with it
  * @note Windows: This returns the "Saved Games" folder. This folder exist in Vista and later
  * @note Linux: XDF does not define a folder for saved games. This will just return the same as GetDataHome()
- * @return The folder base folder for storring save games.
+ * @return The folder base folder for storing save games.
  */
 std::string getSaveGamesFolder2();
 
@@ -209,7 +209,7 @@ public:
 	 */
 	std::string getDocumentsFolder() const;
 	/**
-	 * The folder for storring the user's pictures.
+	 * The folder for storing the user's pictures.
 	 * @return Absolute path to the "Picture" folder
 	 */
 	std::string getPicturesFolder() const;
@@ -234,7 +234,7 @@ public:
 	 */
 	std::string getVideoFolder() const;
 	/**
-	 * The base folder for storring saved games.
+	 * The base folder for storing saved games.
 	 * You must add the program name to it like this:
 	 * @code{.cpp}
 	 * PlatformFolders pf;
@@ -242,7 +242,7 @@ public:
 	 * @endcode
 	 * @note Windows: This is an XP compatible version and returns the path to "My Games" in Documents. Vista and later has an official folder.
 	 * @note Linux: XDF does not define a folder for saved games. This will just return the same as GetDataHome()
-	 * @return The folder base folder for storring save games.
+	 * @return The folder base folder for storing save games.
 	 */
 	std::string getSaveGamesFolder1() const;
 private:
