@@ -236,14 +236,20 @@ static void PlatformFoldersAddFromFile(const std::string& filename, std::map<std
 	std::ifstream infile(filename.c_str());
 	std::string line;
 	while (std::getline(infile, line)) {
-		if (line.length() == 0 || line.at(0) == '#') {
+		if (line.length() == 0 || line.at(0) == '#' || line.substr(0, 4) != "XDG_" || line.find("_DIR") == std::string::npos) {
 			continue;
 		}
-		std::size_t splitPos = line.find("=");
-		std::string key = line.substr(0, splitPos);
-		std::string value = line.substr(splitPos+2, line.length()-splitPos-3);
-		folders[key] = value;
-		//std::cout << key << " : " << value << "\n";
+		try {
+			std::size_t splitPos = line.find('=');
+			std::string key = line.substr(0, splitPos);
+			std::size_t valueStart = line.find('"', splitPos);
+			std::size_t valueEnd = line.find('"', valueStart+1);
+			std::string value = line.substr(valueStart+1, valueEnd - valueStart - 1);
+			folders[key] = value;
+		} catch (std::exception&  e) {
+			std::cerr << "WARNING: Failed to process \"" << line << "\" from \"" << filename << "\". Error: "<< e.what() << "\n";
+			continue;
+		}
 	}
 }
 
