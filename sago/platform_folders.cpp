@@ -178,7 +178,7 @@ namespace sago {
 #if !defined(_WIN32) && !defined(__APPLE__)
 namespace internal {
 	void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders) {
-		std::stringstream ss = std::stringstream(envValue);
+		std::stringstream ss(envValue);
 		std::string value;
 		while (std::getline(ss, value, ':')) {
 			if (value[0] == '/') {
