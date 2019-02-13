@@ -37,6 +37,14 @@ SOFTWARE.
  */
 namespace sago {
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+namespace internal {
+	#if !defined(_WIN32) && !defined(__APPLE__)
+	void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders);
+	#endif
+}
+#endif  //DOXYGEN_SHOULD_SKIP_THIS
+
 /**
  * Retrives the base folder for storing data files.
  * You must add the program name yourself like this:

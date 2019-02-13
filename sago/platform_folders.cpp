@@ -161,34 +161,38 @@ static std::string getLinuxFolderDefault(const char* envName, const char* defaul
 	return res;
 }
 
-static void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders) {
-	std::vector<char> buffer(envValue, envValue + std::strlen(envValue) + 1);
-	char* p = std::strtok ( &buffer[0], ":");
-	while (p != nullptr) {
-		if (p[0] == '/') {
-			folders.push_back(p);
-		}
-		else {
-			//Unless the system is wrongly configured this should never happen... But of course some systems will be incorectly configured.
-			//The XDG documentation indicates that the folder should be ignored but that the program should continue.
-			std::cerr << "Skipping path \"" << p << "\" in \"" << envName << "\" because it does not start with a \"/\"\n";
-		}
-		p = std::strtok (nullptr, ":");
-	}
-}
-
 static void appendExtraFolders(const char* envName, const char* defaultValue, std::vector<std::string>& folders) {
 	const char* envValue = std::getenv(envName);
 	if (!envValue) {
 		envValue = defaultValue;
 	}
-	appendExtraFoldersTokenizer(envName, envValue, folders);
+	sago::internal::appendExtraFoldersTokenizer(envName, envValue, folders);
 }
 
 #endif
 
 
 namespace sago {
+
+#if !defined(_WIN32) && !defined(__APPLE__)
+namespace internal {
+	void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders) {
+		std::vector<char> buffer(envValue, envValue + std::strlen(envValue) + 1);
+		char* p = std::strtok ( &buffer[0], ":");
+		while (p != nullptr) {
+			if (p[0] == '/') {
+				folders.push_back(p);
+			}
+			else {
+				//Unless the system is wrongly configured this should never happen... But of course some systems will be incorectly configured.
+				//The XDG documentation indicates that the folder should be ignored but that the program should continue.
+				std::cerr << "Skipping path \"" << p << "\" in \"" << envName << "\" because it does not start with a \"/\"\n";
+			}
+			p = std::strtok (nullptr, ":");
+		}
+	}
+}
+#endif
 
 std::string getDataHome() {
 #ifdef _WIN32
