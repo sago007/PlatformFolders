@@ -52,8 +52,16 @@ static std::string getHome() {
 		res = homeEnv;
 		return res;
 	}
-	struct passwd* pw = getpwuid(uid);
-	if (!pw) {
+	struct passwd* pw = nullptr;
+	struct passwd pwd;
+	long bufsize = sysconf(_SC_GETPW_R_SIZE_MAX);
+	if (bufsize < 0) {
+		bufsize = 16384;
+	}
+	std::vector<char> buffer;
+	buffer.resize(bufsize);
+	int error_code = getpwuid_r(uid, &pwd, buffer.data(), buffer.size(), &pw);
+	if (error_code) {
 		throw std::runtime_error("Unable to get passwd struct.");
 	}
 	const char* tempRes = pw->pw_dir;
