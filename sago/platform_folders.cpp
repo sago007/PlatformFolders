@@ -91,7 +91,7 @@ static std::string getHome() {
 namespace sago {
 namespace internal {
 
-static std::string win32_utf16_to_utf8(const wchar_t* wstr) {
+std::string win32_utf16_to_utf8(const wchar_t* wstr) {
 	std::string res;
 	// If the 6th parameter is 0 then WideCharToMultiByte returns the number of bytes needed to store the result.
 	int actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, nullptr, 0, nullptr, nullptr);
