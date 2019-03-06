@@ -45,9 +45,9 @@ This project should be compatible with things like [Cmake's ExternalProject_Add]
 You can also follow the [build step](#building) below to install at a system level, and use [Cmake's find_package](https://cmake.org/cmake/help/latest/command/find_package.html).
 
 ```cmake
-# Specifying a version is optional -- note it follows by Semver
+# Specifying a version is optional -- note it follows Semver
 find_package(platform_folders 3.1.0 REQUIRED)
-# Which creates the IMPORTED lib "sago::platform_folders"
+# Which imports the linkable library "sago::platform_folders"
 # Use it like so...
 target_link_libraries(EXEORLIBNAME PRIVATE sago::platform_folders)
 ```
