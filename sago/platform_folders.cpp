@@ -72,7 +72,7 @@ static std::string getHome() {
 	return res;
 }
 
-#endif 
+#endif
 
 #ifdef _WIN32
 // Make sure we don't bring in all the extra junk with windows.h
@@ -191,20 +191,20 @@ namespace sago {
 
 #if !defined(_WIN32) && !defined(__APPLE__)
 namespace internal {
-	void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders) {
-		std::stringstream ss(envValue);
-		std::string value;
-		while (std::getline(ss, value, ':')) {
-			if (value[0] == '/') {
-				folders.push_back(value);
-			}
-			else {
-				//Unless the system is wrongly configured this should never happen... But of course some systems will be incorectly configured.
-				//The XDG documentation indicates that the folder should be ignored but that the program should continue.
-				std::cerr << "Skipping path \"" << value << "\" in \"" << envName << "\" because it does not start with a \"/\"\n";
-			}
+void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders) {
+	std::stringstream ss(envValue);
+	std::string value;
+	while (std::getline(ss, value, ':')) {
+		if (value[0] == '/') {
+			folders.push_back(value);
+		}
+		else {
+			//Unless the system is wrongly configured this should never happen... But of course some systems will be incorectly configured.
+			//The XDG documentation indicates that the folder should be ignored but that the program should continue.
+			std::cerr << "Skipping path \"" << value << "\" in \"" << envName << "\" because it does not start with a \"/\"\n";
 		}
 	}
+}
 }
 #endif
 
@@ -273,7 +273,8 @@ static void PlatformFoldersAddFromFile(const std::string& filename, std::map<std
 			std::size_t valueEnd = line.find('"', valueStart+1);
 			std::string value = line.substr(valueStart+1, valueEnd - valueStart - 1);
 			folders[key] = value;
-		} catch (std::exception&  e) {
+		}
+		catch (std::exception&  e) {
 			std::cerr << "WARNING: Failed to process \"" << line << "\" from \"" << filename << "\". Error: "<< e.what() << "\n";
 			continue;
 		}

@@ -39,12 +39,12 @@ namespace sago {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 namespace internal {
-	#if !defined(_WIN32) && !defined(__APPLE__)
-	void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders);
-	#endif
-	#ifdef _WIN32
-	std::string win32_utf16_to_utf8(const wchar_t* wstr);
-	#endif
+#if !defined(_WIN32) && !defined(__APPLE__)
+void appendExtraFoldersTokenizer(const char* envName, const char* envValue, std::vector<std::string>& folders);
+#endif
+#ifdef _WIN32
+std::string win32_utf16_to_utf8(const wchar_t* wstr);
+#endif
 }
 #endif  //DOXYGEN_SHOULD_SKIP_THIS
 
@@ -225,7 +225,7 @@ public:
 	 */
 	std::string getPicturesFolder() const;
 	/**
-	 * Use sago::getPublicFolder() instead! 
+	 * Use sago::getPublicFolder() instead!
 	 */
 	std::string getPublicFolder() const;
 	/**
