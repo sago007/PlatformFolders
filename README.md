@@ -45,15 +45,17 @@ This project should be compatible with things like [Cmake's ExternalProject_Add]
 You can also follow the [build step](#building) below to install at a system level, and use [Cmake's find_package](https://cmake.org/cmake/help/latest/command/find_package.html).
 
 ```cmake
-# Specifying a version is optional -- note it follows by Semver
+# Specifying a version is optional -- note it follows Semver
 find_package(platform_folders 3.1.0 REQUIRED)
-# Which creates the IMPORTED lib "sago::platform_folders"
+# Which imports the linkable library "sago::platform_folders"
 # Use it like so...
 target_link_libraries(EXEORLIBNAME PRIVATE sago::platform_folders)
 ```
 
 Alternatively, you can just copy the [sago](https://github.com/sago007/PlatformFolders/tree/master/sago) folder into your program and manually link everything.
 If you use the last option and are using a library version from before 4.0.0: Remember to link to the CoreServices lib when compiling on Mac. This typically means passing "-framework CoreServices" during the linking phase.
+
+Note that if you build in-tree, you can link against the Cmake alias `sago::platform_folders` just like if you had used find_package.
 
 ### Building
 

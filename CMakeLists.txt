@@ -9,6 +9,10 @@ add_library(platform_folders
 	sago/platform_folders.cpp
 )
 
+# Creates an alias so that people building in-tree (instead of using find_package)...
+# can still link against the same target
+add_library(sago::platform_folders ALIAS platform_folders)
+
 # Defines standardized defaults for install paths
 include(GNUInstallDirs)
 # Where to search for the header while building
