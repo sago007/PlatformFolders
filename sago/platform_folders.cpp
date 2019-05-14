@@ -98,7 +98,7 @@ std::string win32_utf16_to_utf8(const wchar_t* wstr) {
 	if (actualSize > 0) {
 		//If the converted UTF-8 string could not be in the initial buffer. Allocate one that can hold it.
 		std::vector<char> buffer(actualSize);
-		actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &buffer[0], buffer.size(), nullptr, nullptr);
+		actualSize = WideCharToMultiByte(CP_UTF8, 0, wstr, -1, &buffer[0], static_cast<int>(buffer.size()), nullptr, nullptr);
 		res = buffer.data();
 	}
 	if (actualSize == 0) {
