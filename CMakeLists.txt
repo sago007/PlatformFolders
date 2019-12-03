@@ -9,6 +9,8 @@ add_library(platform_folders
 	sago/platform_folders.cpp
 )
 
+set_target_properties(platform_folders PROPERTIES DEBUG_POSTFIX d)
+
 # Creates an alias so that people building in-tree (instead of using find_package)...
 # can still link against the same target
 add_library(sago::platform_folders ALIAS platform_folders)
