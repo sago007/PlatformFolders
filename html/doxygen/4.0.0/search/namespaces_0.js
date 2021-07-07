@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sago',['sago',['../namespacesago.html',1,'']]]
+  ['sago_17',['sago',['../namespacesago.html',1,'']]]
 ];
