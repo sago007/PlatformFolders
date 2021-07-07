@@ -2,7 +2,7 @@
 
 A C++ library to look for directories like `My Documents`, `~/.config`, `%APPDATA%`, etc. so that you do not need to write platform-specific code
 
-[Source code](https://github.com/sago007/PlatformFolders) • [Latest release (4.0.0)](https://github.com/sago007/PlatformFolders/releases/tag/4.0.0) • [Doxygen documentation](http://sago007.github.io/PlatformFolders/html/doxygen/)
+[Source code](https://github.com/sago007/PlatformFolders) • [Latest release (4.0.0)](https://github.com/sago007/PlatformFolders/releases/tag/4.0.0) • [Doxygen documentation](https://sago007.github.io/PlatformFolders/html/doxygen/)
 
 ## Rationale
 
@@ -11,11 +11,11 @@ There are a lot of platform abstraction libraries available. You can get graphic
 But folder abstraction seems to be more difficult.
 My problem was that the code that found the place to save data was platform dependent. This cluttered my code and often I would not discover that it did not compile until moving it to the different platforms.
 
-[I have written a bit more about it here.](http://sago007.blogspot.dk/2015/10/abstraction-for-special-folders.html)
+[I have written a bit more about it here.](https://sago007.blogspot.dk/2015/10/abstraction-for-special-folders.html)
 
 There are some alternatives that you might consider instead:
 
-* [QStandardPaths](http://doc.qt.io/qt-5/qstandardpaths.html)
+* [QStandardPaths](https://doc.qt.io/qt-5/qstandardpaths.html)
 * [glib](https://developer.gnome.org/glib/stable/glib-Miscellaneous-Utility-Functions.html)
 
 Both are properly more mature than this library. However they are both parts of large frameworks and using them with libraries outside the framework may not be that simple.
