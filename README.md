@@ -2,7 +2,7 @@
 
 A C++ library to look for directories like `My Documents`, `~/.config`, `%APPDATA%`, etc. so that you do not need to write platform-specific code
 
-[Source code](https://github.com/sago007/PlatformFolders) • [Latest release (4.0.0)](https://github.com/sago007/PlatformFolders/releases/tag/4.0.0) • [Doxygen documentation](https://sago007.github.io/PlatformFolders/html/doxygen/)
+[Source code](https://github.com/sago007/PlatformFolders) • [Latest release](https://github.com/sago007/PlatformFolders/releases/latest) • [Doxygen documentation](https://sago007.github.io/PlatformFolders/html/doxygen/)
 
 ## Rationale
 
