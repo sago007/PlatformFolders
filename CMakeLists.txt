@@ -1,9 +1,17 @@
 # For target_compile_features
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+
+set(PLATFORMFOLDERS_MAIN_PROJECT OFF)
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+  set(PLATFORMFOLDERS_MAIN_PROJECT ON)
+endif()
+
 project(platform_folders VERSION 4.1.0 LANGUAGES CXX)
 
 # BUILD_SHARED_LIBS is off by default, the library will be static by default
 option(PLATFORMFOLDERS_BUILD_SHARED_LIBS "Build platform_folders shared library" ${BUILD_SHARED_LIBS})
+option(PLATFORMFOLDERS_ENABLE_INSTALL "Enable platform_folders INSTALL target" ${PLATFORMFOLDERS_MAIN_PROJECT})
+
 set(PLATFORMFOLDERS_TYPE STATIC)
 if(PLATFORMFOLDERS_BUILD_SHARED_LIBS)
 	set(PLATFORMFOLDERS_TYPE SHARED)
@@ -67,47 +75,49 @@ else()
 	set(_PROJECT_INSTALL_CMAKE_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/platform_folders")
 endif()
 
-# Gives "Make install" esque operations a location to install to...
-# and creates a .cmake file to be exported
-install(TARGETS platform_folders
-	EXPORT "platform_foldersConfig"
-	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-	ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-	# Tells it where to put the header files
-	PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/sago"
-)
+if(PLATFORMFOLDERS_ENABLE_INSTALL)
+	# Gives "Make install" esque operations a location to install to...
+	# and creates a .cmake file to be exported
+	install(TARGETS platform_folders
+		EXPORT "platform_foldersConfig"
+		LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+		ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+		# Tells it where to put the header files
+		PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/sago"
+	)
 
-# "The install(TARGETS) and install(EXPORT) commands work together to install a target and a file to help import it"
-# Installs a cmake file which external projects can import.
-install(EXPORT "platform_foldersConfig"
-	NAMESPACE sago::
-	DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
-)
+	# "The install(TARGETS) and install(EXPORT) commands work together to install a target and a file to help import it"
+	# Installs a cmake file which external projects can import.
+	install(EXPORT "platform_foldersConfig"
+		NAMESPACE sago::
+		DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
+	)
 
-# "The export command is used to generate a file exporting targets from a project build tree"
-# Creates an import file for external projects which are aware of the build tree.
-# May be useful for cross-compiling
-export(TARGETS platform_folders
-	FILE "platform_folders-exports.cmake"
-)
+	# "The export command is used to generate a file exporting targets from a project build tree"
+	# Creates an import file for external projects which are aware of the build tree.
+	# May be useful for cross-compiling
+	export(TARGETS platform_folders
+		FILE "platform_folders-exports.cmake"
+	)
 
-# For the config and configversion macros
-include(CMakePackageConfigHelpers)
+	# For the config and configversion macros
+	include(CMakePackageConfigHelpers)
 
-# Creates the project's ConfigVersion.cmake file
-# This allows for find_package() to use a version in the call
-write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfigVersion.cmake"
-	# This'll require versioning in the project() call
-	VERSION ${CMAKE_PROJECT_VERSION}
-	# Just assuming Semver is followed
-	COMPATIBILITY SameMajorVersion
-)
+	# Creates the project's ConfigVersion.cmake file
+	# This allows for find_package() to use a version in the call
+	write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfigVersion.cmake"
+		# This'll require versioning in the project() call
+		VERSION ${CMAKE_PROJECT_VERSION}
+		# Just assuming Semver is followed
+		COMPATIBILITY SameMajorVersion
+	)
 
-# Install the ConfigVersion file, which is located in the build dir
-install(FILES
-		"${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfigVersion.cmake"
-	DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
-)
+	# Install the ConfigVersion file, which is located in the build dir
+	install(FILES
+			"${CMAKE_CURRENT_BINARY_DIR}/platform_foldersConfigVersion.cmake"
+		DESTINATION "${_PROJECT_INSTALL_CMAKE_DIR}"
+	)
+endif()
 
 # A module for testing the library
 include(CTest)
