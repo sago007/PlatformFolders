@@ -10,6 +10,7 @@ project(platform_folders VERSION 4.1.0 LANGUAGES CXX)
 
 # BUILD_SHARED_LIBS is off by default, the library will be static by default
 option(PLATFORMFOLDERS_BUILD_SHARED_LIBS "Build platform_folders shared library" ${BUILD_SHARED_LIBS})
+option(PLATFORMFOLDERS_BUILD_TESTING "Build platform_folders tests" ${PLATFORMFOLDERS_MAIN_PROJECT})
 option(PLATFORMFOLDERS_ENABLE_INSTALL "Enable platform_folders INSTALL target" ${PLATFORMFOLDERS_MAIN_PROJECT})
 
 set(PLATFORMFOLDERS_TYPE STATIC)
@@ -119,10 +120,8 @@ if(PLATFORMFOLDERS_ENABLE_INSTALL)
 	)
 endif()
 
-# A module for testing the library
-include(CTest)
-# BUILD_TESTING is defined (default ON) in CTest
-if(BUILD_TESTING)
+if(PLATFORMFOLDERS_BUILD_TESTING)
+	enable_testing()
 	add_subdirectory(test)
 	add_executable(platform_folders_sample platform_folders.cpp)
 	target_link_libraries(platform_folders_sample PRIVATE platform_folders)
