@@ -2,10 +2,14 @@
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 project(platform_folders VERSION 4.1.0 LANGUAGES CXX)
 
-# Since it's off, the library will be static by default
-option(BUILD_SHARED_LIBS "Build shared instead of static." OFF)
+# BUILD_SHARED_LIBS is off by default, the library will be static by default
+option(PLATFORMFOLDERS_BUILD_SHARED_LIBS "Build platform_folders shared library" ${BUILD_SHARED_LIBS})
+set(PLATFORMFOLDERS_TYPE STATIC)
+if(PLATFORMFOLDERS_BUILD_SHARED_LIBS)
+	set(PLATFORMFOLDERS_TYPE SHARED)
+endif()
 
-add_library(platform_folders
+add_library(platform_folders ${PLATFORMFOLDERS_TYPE}
 	sago/platform_folders.cpp
 )
 
