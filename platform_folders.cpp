@@ -40,6 +40,7 @@ int main() {
 	std::cout << "Download: " << sago::getDownloadFolder() << "\n";
 	std::cout << "Save Games 1: " << sago::getSaveGamesFolder1() << "\n";
 	std::cout << "Save Games 2: " << sago::getSaveGamesFolder2() << "\n";
+	std::cout << "Temp folder: " << sago::getTempFolder() << "\n";
 	std::vector<std::string> extraData;
 	sago::appendAdditionalDataDirectories(extraData);
 	for (size_t i=0; i < extraData.size(); ++i) {

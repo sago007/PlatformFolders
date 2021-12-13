@@ -196,6 +196,14 @@ std::string getSaveGamesFolder1();
  */
 std::string getSaveGamesFolder2();
 
+/**
+ * Returns the temp folder to use for temporary files.
+ * Regardless of OS this path will always end with a path separator ("/" or "\"). This is unlike different from the other get functions!
+ * @note Creating predictable names in the temp folder is a potential security problem on some operating systems. Use with care.
+ * @return The temp folder for storing temp files
+ */
+std::string getTempFolder();
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /**

@@ -132,6 +132,15 @@ static std::string GetKnownWindowsFolder(REFKNOWNFOLDERID folderId, const char* 
 	return sago::internal::win32_utf16_to_utf8(wszPath);
 }
 
+static std::string GeTempWindowsFolder() {
+	wchar_t buffer[MAX_PATH];
+	DWORD hr = GetTempPathW(MAX_PATH, buffer);
+	if (hr < 1 || hr > MAX_PATH) {
+		throw std::runtime_error("Failed to lookup temp folder");
+	}
+	return sago::internal::win32_utf16_to_utf8(buffer);
+}
+
 static std::string GetAppData() {
 	return GetKnownWindowsFolder(FOLDERID_RoamingAppData, "RoamingAppData could not be found");
 }
@@ -441,6 +450,26 @@ std::string getSaveGamesFolder2() {
 	return GetKnownWindowsFolder(FOLDERID_SavedGames, "Failed to find Saved Games folder");
 #else
 	return PlatformFolders().getSaveGamesFolder1();
+#endif
+}
+
+std::string getTempFolder() {
+#ifdef _WIN32
+	return GeTempWindowsFolder();
+#else
+	const char* tempFolder = getenv("TMPDIR");
+	if (tempFolder) {
+		std::string stringTmpFolder = tempFolder;
+		if (stringTmpFolder.back() == '/') {
+			return stringTmpFolder;
+		}
+		else {
+			return stringTmpFolder+"/";
+		}
+	}
+	else {
+		return "/tmp/";
+	}
 #endif
 }
 
