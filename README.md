@@ -93,6 +93,7 @@ int main()
 {
 	std::cout << "Config: " << sago::getConfigHome() << "\n";
 	std::cout << "Data: " << sago::getDataHome() << "\n";
+	std::cout << "State: " << sago::getStateDir() << "\n";
 	std::cout << "Cache: " << sago::getCacheDir() << "\n";
 	std::cout << "Documents: " << sago::getDocumentsFolder() << "\n";
 	std::cout << "Desktop: " << sago::getDesktopFolder() << "\n";
@@ -113,6 +114,7 @@ int main()
 ```
 Config: /home/poul/.config
 Data: /home/poul/.local/share
+State: /home/poul/.local/state
 Cache: /home/poul/.cache
 Documents: /home/poul/Dokumenter
 Desktop: /home/poul/Skrivebord
@@ -129,6 +131,7 @@ Save Games 2: /home/poul/.local/share
 ```
 Config: C:\users\poul\Application Data
 Data: C:\users\poul\Application Data
+State: C:\users\poul\Local Settings\Application Data
 Cache: C:\users\poul\Local Settings\Application Data
 Documents: C:\users\poul\Mine dokumenter
 Desktop: C:\users\poul\Skrivebord
@@ -145,6 +148,7 @@ Save Games 2: C:\users\poul\Saved Games
 ```
 Config: /Users/poul/Library/Application Support
 Data: /Users/poul/Library/Application Support
+State: /Users/poul/Library/Application Support
 Cache: /Users/poul/Library/Caches
 Documents: /Users/poul/Documents
 Desktop: /Users/poul/Desktop
