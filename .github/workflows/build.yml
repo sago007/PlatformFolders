@@ -11,5 +11,6 @@ jobs:
         run: |
           sudo apt-get install -y build-essential cmake
           mkdir -p build && cd build
-          cmake -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release ..
+          cmake -DPLATFORMFOLDERS_BUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release .. -B .
           sudo cmake --build . --target install
+          ctest
