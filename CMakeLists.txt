@@ -6,7 +6,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
   set(PLATFORMFOLDERS_MAIN_PROJECT ON)
 endif()
 
-project(platform_folders VERSION 4.1.0 LANGUAGES CXX)
+project(platform_folders VERSION 4.2.0 LANGUAGES CXX)
 
 # BUILD_SHARED_LIBS is off by default, the library will be static by default
 option(PLATFORMFOLDERS_BUILD_SHARED_LIBS "Build platform_folders shared library" ${BUILD_SHARED_LIBS})

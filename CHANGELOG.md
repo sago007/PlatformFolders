@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [4.2.0] 2022-02-06
+
+### Added
+ - Support for "state" dir aka Local Machine
+
+### Changed
+ - PlatformFolders specific CMake variables are now prefixed with "PLATFORMFOLDERS_" (Thanks @OlivierLDff)
+
 ## [4.1.0] 2021-08-08
 
 ### Added
