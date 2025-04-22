@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
-project(platform_folders VERSION 3.2.1 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.0.0..3.30.3 FATAL_ERROR)
+project(platform_folders VERSION 3.2.2 LANGUAGES CXX)
 
 # Since it's off, the library will be static by default
 option(BUILD_SHARED_LIBS "Build shared instead of static." OFF)
