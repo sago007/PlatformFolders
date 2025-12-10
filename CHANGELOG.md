@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
  - Exposed "sago::internal::getHome()". It might be useful when converting from old file placement.
 
 ### Changed
- - Tested and supports newer versions of CMake
+ - Now supports newer versions of CMake
 
 ## [4.2.0] 2022-02-06
 
@@ -44,7 +44,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
  - Now requires a C++11 compatible compiler (was C++98)
  - Minimum Windows version raised from Windows XP to Windows 7.
  - The Mac version no longer depends on CoreServices
- - The XDG implementation are slightly more resilient to unrelated environments in user-dirs.dirs
+ - The XDG implementation is slightly more resilient to unrelated environments in user-dirs.dirs
  - Improved CMake system
 
 ### Removed
@@ -68,7 +68,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
  - Appveyor CI integration (Thanks @sum01)
 
 ### Changed
- - Optimised use of iterator.
+ - Optimized use of iterators.
  - No longer keeps empty data structure on Mac and Windows platforms.
 
 ## [3.0] 2016-10-08
@@ -93,7 +93,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [2.0] 2015-10-26
 
 ### Added
-- Mac OS X support using Core Framework
+- Mac OS X support using CoreServices Framework
 
 ## [1.0] 2015-09-21
 Designed to work with Linux and Windows XP+

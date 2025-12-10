@@ -1,5 +1,5 @@
 /*
-Its is under the MIT license, to encourage reuse by cut-and-paste.
+It is under the MIT license, to encourage reuse by cut-and-paste.
 
 The original files are hosted here: https://github.com/sago007/PlatformFolders
 
@@ -33,7 +33,7 @@ SOFTWARE.
 #include <string>
 
 /**
- * The namespace I use for common function. Nothing special about it.
+ * The namespace I use for common functions. Nothing special about it.
  */
 namespace sago {
 
@@ -52,7 +52,7 @@ std::string getHome();
 #endif  //DOXYGEN_SHOULD_SKIP_THIS
 
 /**
- * Retrives the base folder for storing data files.
+ * Retrieves the base folder for storing data files.
  * You must add the program name yourself like this:
  * @code{.cpp}
  * string data_home = getDataHome()+"/My Program Name/";
@@ -64,7 +64,7 @@ std::string getHome();
 std::string getDataHome();
 
 /**
- * Retrives the base folder for storing config files.
+ * Retrieves the base folder for storing config files.
  * You must add the program name yourself like this:
  * @code{.cpp}
  * string data_home = getConfigHome()+"/My Program Name/";
@@ -76,7 +76,7 @@ std::string getDataHome();
 std::string getConfigHome();
 
 /**
- * Retrives the base folder for storing cache files.
+ * Retrieves the base folder for storing cache files.
  * You must add the program name yourself like this:
  * @code{.cpp}
  * string data_home = getCacheDir()+"/My Program Name/cache/";
@@ -89,7 +89,7 @@ std::string getConfigHome();
 std::string getCacheDir();
 
 /**
- * Retrives the base folder used for state files.
+ * Retrieves the base folder used for state files.
  * You must add the program name yourself like this:
  * @code{.cpp}
  * string data_home = getStateDir()+"/My Program Name/";
@@ -97,19 +97,19 @@ std::string getCacheDir();
  * On Windows this defaults to %APPDATALOCAL%
  * On Linux this defaults to ~/.local/state but can be configured by the user
  * On OS X this is the same as getDataHome()
- * @return The base folder for storing data that do not need to be backed up but should not be reguarly deleted either.
+ * @return The base folder for storing data that do not need to be backed up but should not be regularly deleted either.
  */
 std::string getStateDir();
 
 /**
  * This will append extra folders that your program should be looking for data files in.
- * This does not normally include the path returned by GetDataHome().
+ * This does not normally include the path returned by getDataHome().
  * If you want all the folders you should do something like:
  * @code{.cpp}
  * vector<string> folders;
  * folders.push_back(getDataHome());
  * appendAdditionalDataDirectories(folders);
- * for (string s& : folders) {
+ * for (string& s : folders) {
  *     s+="/My Program Name/";
  * }
  * @endcode
@@ -121,13 +121,13 @@ void appendAdditionalDataDirectories(std::vector<std::string>& homes);
 
 /**
  * This will append extra folders that your program should be looking for config files in.
- * This does not normally include the path returned by GetConfigHome().
+ * This does not normally include the path returned by getConfigHome().
  * If you want all the folders you should do something like:
  * @code{.cpp}
  * std::vector<std::string> folders;
  * folders.push_back(sago::getConfigHome());
  * sago::appendAdditionalConfigDirectories(folders);
- * for (std::string s& : folders) {
+ * for (std::string& s : folders) {
  *     s+="/My Program Name/";
  * }
  * @endcode
@@ -194,8 +194,8 @@ std::string getVideoFolder();
  * string saved_games_folder = sago::getSaveGamesFolder1()+"/My Program Name/";
  * @endcode
  * @note Windows: This is an XP compatible version and returns the path to "My Games" in Documents. Vista and later has an official folder.
- * @note Linux: XDF does not define a folder for saved games. This will just return the same as GetDataHome()
- * @return The folder base folder for storing save games.
+ * @note Linux: XDG does not define a folder for saved games. This will just return the same as getDataHome()
+ * @return The base folder for storing save games.
  */
 std::string getSaveGamesFolder1();
 
@@ -205,18 +205,18 @@ std::string getSaveGamesFolder1();
  * @code{.cpp}
  * string saved_games_folder = sago::getSaveGamesFolder2()+"/My Program Name/";
  * @endcode
- * @note PlatformFolders provide different folders to for saved games as not all operating systems has support for Saved Games yet.
+ * @note PlatformFolders provides different folders for saved games as not all operating systems has support for Saved Games yet.
  * It is recommended to pick the highest number (currently getSaveGamesFolder2) at the time your product enters production and stick with it
  * @note Windows: This returns the "Saved Games" folder. This folder exist in Vista and later
- * @note Linux: XDF does not define a folder for saved games. This will just return the same as GetDataHome()
- * @return The folder base folder for storing save games.
+ * @note Linux: XDG does not define a folder for saved games. This will just return the same as getDataHome()
+ * @return The base folder for storing save games.
  */
 std::string getSaveGamesFolder2();
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /**
- * This class contains methods for finding the system depended special folders.
+ * This class contains methods for finding the system-dependent special folders.
  * For Windows these folders are either by convention or given by CSIDL.
  * For Linux XDG convention is used.
  * The Linux version has very little error checking and assumes that the config is correct
@@ -269,8 +269,8 @@ public:
 	 * string saved_games_folder = pf.getSaveGamesFolder1()+"/My Program Name/";
 	 * @endcode
 	 * @note Windows: This is an XP compatible version and returns the path to "My Games" in Documents. Vista and later has an official folder.
-	 * @note Linux: XDF does not define a folder for saved games. This will just return the same as GetDataHome()
-	 * @return The folder base folder for storing save games.
+	 * @note Linux: XDG does not define a folder for saved games. This will just return the same as getDataHome()
+	 * @return The base folder for storing save games.
 	 */
 	std::string getSaveGamesFolder1() const;
 private:

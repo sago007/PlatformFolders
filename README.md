@@ -9,7 +9,7 @@ A C++ library to look for directories like `My Documents`, `~/.config`, `%APPDAT
 There are a lot of platform abstraction libraries available. You can get graphics abstraction libraries, GUI abstraction libraries and file abstraction libraries.
 
 But folder abstraction seems to be more difficult.
-My problem was that the code that found the place to save data was platform dependent. This cluttered my code and often I would not discover that it did not compile until moving it to the different platforms.
+My problem was that the code that found the place to save data was platform-dependent. This cluttered my code and often I would not discover that it did not compile until moving it to the different platforms.
 
 [I have written a bit more about it here.](https://sago007.blogspot.dk/2015/10/abstraction-for-special-folders.html)
 
@@ -18,7 +18,7 @@ There are some alternatives that you might consider instead:
 * [QStandardPaths](https://doc.qt.io/qt-5/qstandardpaths.html)
 * [glib](https://developer.gnome.org/glib/stable/glib-Miscellaneous-Utility-Functions.html)
 
-Both are properly more mature than this library. However they are both parts of large frameworks and using them with libraries outside the framework may not be that simple.
+Both are probably more mature than this library. However they are both parts of large frameworks and using them with libraries outside the framework may not be that simple.
 
 ## Operating System Support
 
@@ -34,9 +34,9 @@ It should work on any Unix system that has the following headers available: `pwd
 
 ### macOS
 
-Version 4.0.0 and forward uses hardcoded values for the directories on Mac OS X. Unlike the other operating systems the folders cannot be moved on a Mac and the translation is done in the UI.
-The versions 2.X and 3.X uses the deprecated FSFindFolder, which requires the CoreServices framework during linking.
-Version 1.X simple used the XDG specification.
+Version 4.0.0 and onwards use hardcoded values for the directories on Mac OS X. Unlike the other operating systems the folders cannot be moved on a Mac and the translation is done in the UI.
+The versions 2.X and 3.X use the deprecated FSFindFolder, which requires the CoreServices framework during linking.
+Version 1.X simply used the XDG specification.
 
 ## Usage
 
@@ -173,6 +173,6 @@ From version 3.0, Windows always encodes to UTF-8, and this will be the default 
 Before version 3.0, Windows was encoded in ANSI.
 Although the user may use any characters they want, I recommend that the program should have only ASCII characters in the source code itself.
 
-# Licence
+# License
 
 Provided under the MIT license for the same reason XDG is licensed under it. So that you can quickly copy-paste the methods you need or just include the "sago"-folder.
