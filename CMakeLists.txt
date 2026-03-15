@@ -32,7 +32,7 @@ add_library(sago::platform_folders ALIAS platform_folders)
 include(GNUInstallDirs)
 # Where to search for the header while building
 target_include_directories(platform_folders PUBLIC
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sago>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 	# Controls where #include <sago/platform_folders.h> starts to look from
 	# So /usr/include/<sago/platform_folders.h>
 	# or C:\Program Files\platform_folders\include\<sago/platform_folders.h>
@@ -69,7 +69,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		)
 	endif()
 	# Controls where the exports, config, and configversion files install to
-	set(_PROJECT_INSTALL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/cmake")
+	# Use a relative path so it works correctly with FetchContent and
+	# respects CMAKE_INSTALL_PREFIX at install time
+	set(_PROJECT_INSTALL_CMAKE_DIR "cmake")
 else()
 	# When calling find_package(<name>)
 	# it looks for /usr/lib/cmake/<name>/<name>Config.cmake
