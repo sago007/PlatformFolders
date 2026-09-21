@@ -213,6 +213,8 @@ std::string getSaveGamesFolder1();
  */
 std::string getSaveGamesFolder2();
 
+std::string getProjectsFolder();
+
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 /**
@@ -241,6 +243,10 @@ public:
 	 * @return Absolute path to the "Picture" folder
 	 */
 	std::string getPicturesFolder() const;
+	/**
+	 * The folder for the users projects.
+	 */
+	std::string getProjectsFolder() const;
 	/**
 	 * Use sago::getPublicFolder() instead!
 	 */

@@ -317,6 +317,7 @@ static void PlatformFoldersFillData(std::map<std::string, std::string>& folders)
 	folders["XDG_DOWNLOAD_DIR"] = "$HOME/Downloads";
 	folders["XDG_MUSIC_DIR"] = "$HOME/Music";
 	folders["XDG_PICTURES_DIR"] = "$HOME/Pictures";
+	folders["XDG_PROJECTS_DIR"] = "$HOME/Projects";
 	folders["XDG_PUBLICSHARE_DIR"] = "$HOME/Public";
 	folders["XDG_TEMPLATES_DIR"] = "$HOME/.Templates";
 	folders["XDG_VIDEOS_DIR"] = "$HOME/Videos";
@@ -376,6 +377,16 @@ std::string PlatformFolders::getPicturesFolder() const {
 	return sago::internal::getHome()+"/Pictures";
 #else
 	return data->folders["XDG_PICTURES_DIR"];
+#endif
+}
+
+std::string PlatformFolders::getProjectsFolder() const {
+#ifdef _WIN32
+	return GetKnownWindowsFolder(FOLDERID_Documents, "Failed to find My Documents folder")+"\\Projects";
+#elif defined(__APPLE__)
+	return sago::internal::getHome()+"/Projects";
+#else
+	return data->folders["XDG_PROJECTS_DIR"];
 #endif
 }
 
@@ -449,6 +460,10 @@ std::string getDownloadFolder1() {
 
 std::string getPicturesFolder() {
 	return PlatformFolders().getPicturesFolder();
+}
+
+std::string getProjectsFolder() {
+	return PlatformFolders().getProjectsFolder();
 }
 
 std::string getPublicFolder() {
