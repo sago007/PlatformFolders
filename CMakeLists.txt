@@ -1,5 +1,5 @@
 # For target_compile_features
-cmake_minimum_required(VERSION 3.5.1...3.30.3)
+cmake_minimum_required(VERSION 3.5.1...4.2.3)
 
 set(PLATFORMFOLDERS_MAIN_PROJECT OFF)
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
